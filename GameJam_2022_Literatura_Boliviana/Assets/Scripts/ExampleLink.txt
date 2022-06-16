@@ -1,0 +1,4 @@
+https://answers.unity.com/questions/1654920/player-is-in-range-of-an-item-or-door-and-can-inte.html
+
+//Osu
+https://gitlab.com/fentras/osu_unity-mp/-/tree/master/src
