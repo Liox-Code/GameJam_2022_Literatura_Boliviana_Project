@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
 {
     public static CameraController instance;
     [SerializeField]
-    private GameObject followTarget;
+    public GameObject followTarget;
     [SerializeField]
     private Vector3 targetPosition;
     [SerializeField]
