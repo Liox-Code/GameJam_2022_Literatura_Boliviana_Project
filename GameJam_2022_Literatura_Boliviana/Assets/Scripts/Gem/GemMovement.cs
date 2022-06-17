@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class GemMovement : MonoBehaviour
+public class GemMovement : MonoBehaviour, IClick
 {
     [SerializeField] private float initialVelocity = 4f;
     [Range(1.1f,6)][SerializeField] private float minVelocity = 2;
@@ -22,12 +22,22 @@ public class GemMovement : MonoBehaviour
         Launch();
     }
 
+    private void Update()
+    {
+        currentVelocity = rbGem.velocity;
+    }
+
     private void Launch()
     {
         float xVelocity = Random.Range(0, 2) == 0 ? 1 : -1;
         float yVelocity = Random.Range(0, 2) == 0 ? 1 : -1;
 
         rbGem.velocity = new Vector2(xVelocity, yVelocity) * initialVelocity;
+    }
+
+    public void onClickAction()
+    {
+        Destroy(gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -42,11 +52,6 @@ public class GemMovement : MonoBehaviour
 
             rbGem.velocity = ClampMagnitudeMaxMin(rbGem.velocity * velocityMultiplier, maxVelocity, minVelocity);
         }
-    }
-
-    private void Update()
-    {
-        currentVelocity = rbGem.velocity;
     }
 
     public static Vector3 ClampMagnitudeMaxMin(Vector3 v, float max, float min)

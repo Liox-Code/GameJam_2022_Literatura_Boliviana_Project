@@ -2,3 +2,7 @@ https://answers.unity.com/questions/1654920/player-is-in-range-of-an-item-or-doo
 
 //Osu
 https://gitlab.com/fentras/osu_unity-mp/-/tree/master/src
+
+https://www.gamedeveloper.com/audio/coding-to-the-beat---under-the-hood-of-a-rhythm-game-in-unity
+
+https://www.gamedeveloper.com/programming/music-syncing-in-rhythm-games

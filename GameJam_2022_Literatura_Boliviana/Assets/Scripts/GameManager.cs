@@ -26,12 +26,6 @@ public class GameManager : MonoBehaviour
         SceneManager.activeSceneChanged += HidePlayer;
     }
 
-    private void OnEnable()
-    {
-
-        Debug.Log("enable");
-    }
-
     private void HidePlayer(Scene oldScene, Scene newScene)
     {
         if (newScene.name == "MusicPuzzle")
@@ -40,7 +34,17 @@ public class GameManager : MonoBehaviour
             {
                 CameraController.instance.transform.position = new Vector3(0,0,CameraController.instance.transform.position.z);
             }
-            Destroy(PlayerController.instance.gameObject);
+            if(PlayerController.instance.gameObject != null)
+            {
+               Destroy(PlayerController.instance.gameObject);
+            }
+        }
+        else
+        {
+            if (PlayerController.instance.gameObject != null)
+            {
+                CameraController.instance.followTarget = PlayerController.instance.gameObject;
+            }
         }
     }
 }
