@@ -5,7 +5,7 @@ using UnityEngine;
 public class NPCDialog : MonoBehaviour
 {
     NPCInputActions npcController;
-    public string[] npcDialogs;
+    private string currentDialog = "Dialog_1";
 
     private bool playerOnZone;
 
@@ -25,7 +25,7 @@ public class NPCDialog : MonoBehaviour
     {
         if (playerOnZone)
         {
-            DialogManager.instance.ShowDialog(npcDialogs);
+            DialogManager.instance.ShowDialog(currentDialog);
             if (gameObject.GetComponentInParent<NPCMovement>() != null)
             {
                 gameObject.GetComponentInParent<NPCMovement>().isTalking = true;
