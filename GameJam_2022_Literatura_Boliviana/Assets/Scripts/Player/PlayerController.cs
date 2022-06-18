@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float speed = 4.0F;
     public string nextPlaceName;
     private bool isWalking = false;
+    public bool isTalking = false;
     public Vector2 lastMovement = Vector2.zero;
 
     private float movementX;
@@ -52,6 +53,13 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (isTalking)
+        {
+            playerRigidbody.velocity = Vector2.zero;
+            animator.SetBool(walking, false);
+            return;
+        };
+
         isWalking = false;
         if (movementX > 0.5 || movementX < -0.5)
         {

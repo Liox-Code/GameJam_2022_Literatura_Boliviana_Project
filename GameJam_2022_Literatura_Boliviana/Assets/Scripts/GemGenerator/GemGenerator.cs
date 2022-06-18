@@ -19,6 +19,11 @@ public class GemGenerator : MonoBehaviour
     //Define Sprites to be aplied on the instantited Gems
     [SerializeField] private Sprite[] gemColors;
 
+    private void OnDisable()
+    {
+        mouseController.Disable();
+    }
+
     private void Start()
     {
         // Activate mouse controler and add StartedClickFunction when click started;

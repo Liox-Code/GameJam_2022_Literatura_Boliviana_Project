@@ -1,0 +1,34 @@
+{
+    "name": "NPCInputActions",
+    "maps": [
+        {
+            "name": "NPC",
+            "id": "edb4ccd4-1e7e-4759-8114-c69dfadb8338",
+            "actions": [
+                {
+                    "name": "OpenDialog",
+                    "type": "Button",
+                    "id": "89393ec4-6398-4fa5-b6b8-4302d8bfac85",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6f65562a-ca6f-452f-8b92-ecc5db88ef51",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenDialog",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
