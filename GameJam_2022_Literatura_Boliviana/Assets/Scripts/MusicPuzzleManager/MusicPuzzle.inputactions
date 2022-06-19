@@ -1,5 +1,5 @@
 {
-    "name": "Mouse_Input_Actions",
+    "name": "MusicPuzzle",
     "maps": [
         {
             "name": "Mouse",
@@ -44,6 +44,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "b58efccd-7399-4c90-904e-ddef71cbea14",
+            "actions": [
+                {
+                    "name": "ToggleMenu",
+                    "type": "Button",
+                    "id": "5cac7ac4-d2a7-4afd-b6a9-842d4504f368",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ddda85f2-c5cc-430e-b2a1-07929256a6b4",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

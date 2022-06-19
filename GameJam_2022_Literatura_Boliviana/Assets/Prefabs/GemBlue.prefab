@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 1034698456708953909}
   - component: {fileID: 1034698456708953911}
   - component: {fileID: 1034698456708953910}
+  - component: {fileID: 6989422488077225558}
   - component: {fileID: 3136924425190029098}
   m_Layer: 0
-  m_Name: Gem
+  m_Name: GemBlue
   m_TagString: Gem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,6 +74,19 @@ MonoBehaviour:
   minVelocity: 5
   maxVelocity: 6
   currentVelocity: {x: 0, y: 0}
+--- !u!114 &6989422488077225558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034698456708953907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64bae9e1d5ffb0b4d8fdbdb3b0f701e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gemTypes: 2
 --- !u!70 &3136924425190029098
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -87,7 +101,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.7, y: 0.7}
+  m_Size: {x: 0.8, y: 1}
   m_Direction: 0
 --- !u!1 &6171536375992499332
 GameObject:
@@ -162,7 +176,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1095299536, guid: dd4a0df4eae4293488449dd12552be50, type: 3}
+  m_Sprite: {fileID: 616890207, guid: dd4a0df4eae4293488449dd12552be50, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

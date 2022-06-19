@@ -16,10 +16,20 @@ public class GemMovement : MonoBehaviour, IClick
 
     private Rigidbody2D rbGem;
 
+    private void Awake()
+    {
+        GemGenerator.OnUpdateCurrentGemType += activateCircle;
+    }
+
     private void Start()
     {
         rbGem = GetComponent<Rigidbody2D>();
         Launch();
+    }
+
+    private void OnDisable()
+    {
+        GemGenerator.OnUpdateCurrentGemType -= activateCircle;
     }
 
     private void Update()
@@ -37,7 +47,14 @@ public class GemMovement : MonoBehaviour, IClick
 
     public void onClickAction()
     {
+        GemGenerator.OnUpdateCurrentGemType -= activateCircle;
         Destroy(gameObject);
+    }
+
+    private void activateCircle()
+    {
+        bool isActive = (GemGenerator.instance.activeGemType.gemTypes == gameObject.GetComponent<GemType>().gemTypes);
+        gameObject.transform.Find("Circle").gameObject.SetActive(isActive);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
