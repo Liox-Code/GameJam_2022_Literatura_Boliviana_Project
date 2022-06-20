@@ -131,6 +131,7 @@ public class GemGenerator : MonoBehaviour
             activeGemTypesList = activeGemTypesList.Where(activeGemType => activeGemType.gemsTypeQuantity > 0).ToList<GemTypes>();
             if (activeGemTypesList.Count <= 0)
             {
+                audioSource.Stop();
                 StopCoroutine(activeRandomGemType());
                 break;
             };

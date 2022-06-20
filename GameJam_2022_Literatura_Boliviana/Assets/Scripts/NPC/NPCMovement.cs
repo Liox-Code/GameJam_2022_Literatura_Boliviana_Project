@@ -44,15 +44,15 @@ public class NPCMovement : MonoBehaviour
 
     private void Update()
     {
-        if (!DialogManager.instance.dialogActive)
-        {
-            isTalking = false;
-        }
-        if (!isTalking)
-        {
-            StopWalking();
-            return;
-        }
+        //if (!DialogManager.instance.dialogActive)
+        //{
+        //    isTalking = false;
+        //}
+        //if (!isTalking)
+        //{
+        //    StopWalking();
+        //    return;
+        //}
         //if (isWalking)
         //{
         //    Debug.Log("Walking");
