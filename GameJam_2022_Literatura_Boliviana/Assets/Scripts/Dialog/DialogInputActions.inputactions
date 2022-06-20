@@ -1,0 +1,74 @@
+{
+    "name": "DialogInputActions",
+    "maps": [
+        {
+            "name": "Dialog",
+            "id": "66a4424c-5cb9-408b-ab84-0664141d5c7f",
+            "actions": [
+                {
+                    "name": "NextDialog",
+                    "type": "Button",
+                    "id": "e5397471-7f44-4936-82f3-16aec3e96c36",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PreviousDialog",
+                    "type": "Button",
+                    "id": "771b767b-ef55-4b0e-86b5-7b715c493bf3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CloseDialog",
+                    "type": "Button",
+                    "id": "5e182209-ad5b-45b5-9ac5-9a26153794cd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f569b2af-d195-4e59-b0da-bab69dc28972",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NextDialog",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4f85e79b-c67c-4f03-9339-ab5b570c64cd",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PreviousDialog",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cc21470e-1cee-45da-bced-01a6fc81f13d",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CloseDialog",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

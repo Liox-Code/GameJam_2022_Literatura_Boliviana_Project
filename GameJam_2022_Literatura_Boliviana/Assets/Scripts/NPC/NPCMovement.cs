@@ -9,6 +9,7 @@ public class NPCMovement : MonoBehaviour
     private BoxCollider2D npcBoxCollider2D;
 
     [SerializeField] private bool isWalking;
+    public bool isTalking;
 
     [SerializeField] private float walkTime = 1.5f;
     [SerializeField] private float walkCounter;
@@ -16,12 +17,17 @@ public class NPCMovement : MonoBehaviour
     [SerializeField] private float waitTime = 1.5f;
     [SerializeField] private float waitCounter;
 
-    private Vector2[] walkingDirection =
+    class walkingDirection
     {
-        new Vector2(1,0),
-        new Vector2(-1,0),
-        new Vector2(0,1),
-        new Vector2(0,-1)
+        public Vector2 Direction { get; set; }
+        public bool IsPosible { get; set; }
+    }
+    private Dictionary<string, walkingDirection> direction = new Dictionary<string, walkingDirection>()
+    {
+        { "Top", new walkingDirection {Direction = new Vector2(0,1), IsPosible = true}},
+        { "Right", new walkingDirection {Direction = new Vector2(1,0), IsPosible = true}},
+        { "Bottom", new walkingDirection {Direction = new Vector2(0,-1), IsPosible = true}},
+        { "Left", new walkingDirection {Direction = new Vector2(-1,0), IsPosible = true}}
     };
 
     private int currentDirection;
@@ -38,50 +44,64 @@ public class NPCMovement : MonoBehaviour
 
     private void Update()
     {
-        if (isWalking)
-        {
-            if (npcWalkingZone != null)
-            {
-                //Debug.Log($"{npcBoxCollider2D.bounds.min.x} <= {npcWalkingZone.bounds.min.x} =={(npcBoxCollider2D.bounds.min.x <= npcWalkingZone.bounds.min.x)}");
-                //Debug.Log($"{npcBoxCollider2D.bounds.max.x} >= {npcWalkingZone.bounds.max.x} =={(npcBoxCollider2D.bounds.max.x >= npcWalkingZone.bounds.max.x)}");
-                //Debug.Log($"{npcBoxCollider2D.bounds.min.y} <= {npcWalkingZone.bounds.min.y} =={(npcBoxCollider2D.bounds.min.y <= npcWalkingZone.bounds.min.y)}");
-                //Debug.Log($"{npcBoxCollider2D.bounds.max.y} >= {npcWalkingZone.bounds.max.y} =={(npcBoxCollider2D.bounds.max.y >= npcWalkingZone.bounds.max.y)}");
-                if (
-                    npcBoxCollider2D.bounds.min.x <= npcWalkingZone.bounds.min.x ||
-                    npcBoxCollider2D.bounds.max.x >= npcWalkingZone.bounds.max.x ||
-                    npcBoxCollider2D.bounds.min.y <= npcWalkingZone.bounds.min.y ||
-                    npcBoxCollider2D.bounds.max.y >= npcWalkingZone.bounds.max.y
-                    )
-                {
-                    npcRigidbody2D.velocity = Vector2.zero;
-                    StopWalking();
-                }
-            }
+        //if (!DialogManager.instance.dialogActive)
+        //{
+        //    isTalking = false;
+        //}
+        //if (!isTalking)
+        //{
+        //    StopWalking();
+        //    return;
+        //}
+        //if (isWalking)
+        //{
+        //    Debug.Log("Walking");
+        //    if (npcWalkingZone != null)
+        //    {
+        //        //Debug.Log($"{npcBoxCollider2D.bounds.min.x} <= {npcWalkingZone.bounds.min.x} =={(npcBoxCollider2D.bounds.min.x <= npcWalkingZone.bounds.min.x)}");
+        //        //Debug.Log($"{npcBoxCollider2D.bounds.max.x} >= {npcWalkingZone.bounds.max.x} =={(npcBoxCollider2D.bounds.max.x >= npcWalkingZone.bounds.max.x)}");
+        //        //Debug.Log($"{npcBoxCollider2D.bounds.min.y} <= {npcWalkingZone.bounds.min.y} =={(npcBoxCollider2D.bounds.min.y <= npcWalkingZone.bounds.min.y)}");
+        //        //Debug.Log($"{npcBoxCollider2D.bounds.max.y} >= {npcWalkingZone.bounds.max.y} =={(npcBoxCollider2D.bounds.max.y >= npcWalkingZone.bounds.max.y)}");
+        //        if (
+        //            npcBoxCollider2D.bounds.min.x <= npcWalkingZone.bounds.min.x ||
+        //            npcBoxCollider2D.bounds.max.x >= npcWalkingZone.bounds.max.x ||
+        //            npcBoxCollider2D.bounds.min.y <= npcWalkingZone.bounds.min.y ||
+        //            npcBoxCollider2D.bounds.max.y >= npcWalkingZone.bounds.max.y
+        //            )
+        //        {
+        //            npcRigidbody2D.velocity = Vector2.zero;
+        //            return;
+        //        }
+        //    }
 
-            npcRigidbody2D.velocity = walkingDirection[currentDirection] * speed;
+        //    npcRigidbody2D.velocity = walkingDirection[currentDirection] * speed;
 
-            walkCounter -= Time.deltaTime;
-            if (walkCounter < 0)
-            {
-                StopWalking();
-            }
-        }
-        else
-        {
-            npcRigidbody2D.velocity = Vector2.zero;
+        //    walkCounter -= Time.deltaTime;
+        //    if (walkCounter < 0)
+        //    {
+        //        StopWalking();
+        //    }
+        //    Debug.Log("FinishWWalk");
+        //}
+        //else
+        //{
+        //    npcRigidbody2D.velocity = Vector2.zero;
 
-            waitCounter -= Time.deltaTime;
-            if (waitCounter < 0)
-            {
-                StartWalking();
-            }
-        }
+        //    waitCounter -= Time.deltaTime;
+        //    if (waitCounter < 0)
+        //    {
+        //        StartWalking();
+        //    }
+        //}
+        //StartWalking();
     }
 
     private void StartWalking()
     {
         isWalking = true;
-        currentDirection = Random.Range(0, walkingDirection.Length);
+        //currentDirection = Random.Range(0, walkingDirection.Length);
+
+        //currentDirection = direction.TryGetValue("Top", out lol );
         walkCounter = walkTime;
     }
 

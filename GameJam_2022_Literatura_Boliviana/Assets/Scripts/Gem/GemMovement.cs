@@ -14,12 +14,25 @@ public class GemMovement : MonoBehaviour, IClick
     private float velocityMultiplier = 1.1f;
     private float velocityDivider = 1.1f;
 
+    private bool reduceCircleSizeEnabled = false;
+
     private Rigidbody2D rbGem;
+
+    private void Awake()
+    {
+        GemGenerator.OnUpdateCurrentGemType += activateCircle;
+    }
 
     private void Start()
     {
         rbGem = GetComponent<Rigidbody2D>();
         Launch();
+    }
+
+    private void OnDisable()
+    {
+        GemGenerator.OnUpdateCurrentGemType -= activateCircle;
+        StopCoroutine(reduceCircleSize());
     }
 
     private void Update()
@@ -37,7 +50,19 @@ public class GemMovement : MonoBehaviour, IClick
 
     public void onClickAction()
     {
+        GemGenerator.OnUpdateCurrentGemType -= activateCircle;
         Destroy(gameObject);
+    }
+
+    private void activateCircle()
+    {
+        bool isActive = (GemGenerator.instance.activeGemType.gemTypes == gameObject.GetComponent<GemType>().gemTypes);
+        gameObject.transform.Find("Circle").gameObject.SetActive(isActive);
+        gameObject.transform.Find("Circle").gameObject.transform.localScale = new Vector3(2, 2, 0);
+        if (!reduceCircleSizeEnabled)
+        {
+            StartCoroutine(reduceCircleSize());
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -52,6 +77,27 @@ public class GemMovement : MonoBehaviour, IClick
 
             rbGem.velocity = ClampMagnitudeMaxMin(rbGem.velocity * velocityMultiplier, maxVelocity, minVelocity);
         }
+    }
+
+    IEnumerator reduceCircleSize()
+    {
+        reduceCircleSizeEnabled = true;
+        while (true)
+        {
+            yield return new WaitForSeconds(0.05f);;
+            if (gameObject.transform.Find("Circle").gameObject.transform.localScale.x < 0 && gameObject.transform.Find("Circle").gameObject.transform.localScale.y < 0)
+            {
+                Debug.Log("LESS");
+                reduceCircleSizeEnabled = false;
+                StopCoroutine(reduceCircleSize());
+                break;
+            }
+            else
+            {
+                gameObject.transform.Find("Circle").gameObject.transform.localScale -= new Vector3(0.05f, 0.05f, 0);
+            }
+        }
+
     }
 
     public static Vector3 ClampMagnitudeMaxMin(Vector3 v, float max, float min)
