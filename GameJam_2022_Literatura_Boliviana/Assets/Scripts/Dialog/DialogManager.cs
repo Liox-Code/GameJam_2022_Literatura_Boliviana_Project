@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+[RequireComponent(typeof(AudioSource))]
 public class DialogManager : MonoBehaviour
 {
     public static DialogManager instance;
@@ -22,11 +23,23 @@ public class DialogManager : MonoBehaviour
         }}
     };
 
+    [System.Serializable]
+    public class actorDialogVoice
+    {
+        public DialogActors.ActorType actor;
+        public AudioClip actorVoice;
+    }
+
+    [SerializeField] private actorDialogVoice[] actorsVoiceList; 
+
     private int currentDialogLine = 1;
     
     [SerializeField] private GameObject dialogBackground;
     [SerializeField] private GameObject[] dialogActorsImages;
     [SerializeField] TextMeshProUGUI dialogText;
+    private AudioSource audioSource;
+    [SerializeField] private float typingTime;
+    [SerializeField] private float charsToPlaySound;
     public bool dialogActive;
 
     private void Awake()
@@ -45,6 +58,8 @@ public class DialogManager : MonoBehaviour
         dialogController = new DialogInputActions();
         dialogController.Dialog.NextDialog.started += ctx => NextDialog();
         dialogController.Dialog.PreviousDialog.started += ctx => PreviousDialog();
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnDisable()
@@ -93,9 +108,11 @@ public class DialogManager : MonoBehaviour
 
     private void setDialogText (int currentDialogLine)
     {
+        StopAllCoroutines();
         if (currentDialogLine >= 0 && currentDialogLine < dialogLines.Length)
         {
-            DialogActors.ActorType talkingActor = dialogLines[currentDialogLine].actor;;
+            DialogActors.ActorType talkingActor = dialogLines[currentDialogLine].actor;
+
             foreach (GameObject dialogActor in dialogActorsImages)
             {
                 if (talkingActor == dialogActor.GetComponent<DialogActors>().actorType)
@@ -107,11 +124,42 @@ public class DialogManager : MonoBehaviour
                     dialogActor.SetActive(false);
                 }
             }
-            dialogText.text = dialogLines[currentDialogLine].dialogLine;
+
+            foreach (actorDialogVoice actorVoice in actorsVoiceList)
+            {
+                if (actorVoice.actor == talkingActor)
+                {
+                    audioSource.clip = actorVoice.actorVoice;
+                }
+            }
+
+            //dialogText.text = dialogLines[currentDialogLine].dialogLine;
+            StartCoroutine(ShowLine(dialogLines[currentDialogLine].dialogLine));
         }
         if (currentDialogLine >= dialogLines.Length)
         {
             CloseDialog();
         }
     }
+
+    private IEnumerator ShowLine(string dialogLine)
+    {
+        dialogText.text = string.Empty;
+        int charIndex = 0;
+
+        foreach (char ch in dialogLine)
+        {
+            dialogText.text += ch;
+
+            if (charIndex % charsToPlaySound == 0)
+            {
+                audioSource.Play();
+            }
+
+            charIndex++;
+
+            yield return new WaitForSeconds(typingTime);
+        }
+    }
+
 }

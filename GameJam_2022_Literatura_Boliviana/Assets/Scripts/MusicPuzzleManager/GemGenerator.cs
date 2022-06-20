@@ -1,11 +1,16 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(AudioSource))]
 public class GemGenerator : MonoBehaviour
 {
+    //AudioSource
+    public AudioSource audioSource;
+
     //Singleton
     public static GemGenerator instance;
 
@@ -21,8 +26,21 @@ public class GemGenerator : MonoBehaviour
     [SerializeField] private GameObject[] gems;
     private SpriteRenderer spGem;
 
+
+    [SerializeField] private AudioClip[] gemMelody;
+
+    class GemTypes
+    {
+        public GemType gemType;
+        public int gemsTypeQuantity;
+        public AudioClip gemTypeMelody;
+    }
+
+    List<GemTypes> gemTypesList = new List<GemTypes>();
+    List<GemTypes> activeGemTypesList;
+
+
     //Define GemTypes
-    private GemType[] gemTypes;
     public GemType activeGemType;
 
     //Define current Gemtype able to be destroyed
@@ -48,14 +66,13 @@ public class GemGenerator : MonoBehaviour
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
         // Activate mouse controler and add StartedClickFunction when click started;
         mouseController = new MusicPuzzle();
         mouseController.Enable();
         mouseController.Mouse.Click.started += ctx => ClickObject();
-        mouseController.UI.ToggleMenu.started += ctx => ToggleMenu(); ;
-
-        //Initialize Array GemTypes with gems lenght
-        gemTypes = new GemType[gems.Length];
+        mouseController.UI.ToggleMenu.started += ctx => ToggleMenu();
 
         //2 Loops to instantiate Gem per Row and Column
         for (int gemType = 0; gemType < gems.Length; gemType++)
@@ -64,22 +81,21 @@ public class GemGenerator : MonoBehaviour
             spGem = gems[gemType].transform.Find("GemSprite").GetComponent<SpriteRenderer>();
 
             //Populate GemTypes
-            gemTypes[gemType] = gems[gemType].GetComponent<GemType>();
+            gemTypesList.Add(new GemTypes { gemType = gems[gemType].GetComponent<GemType>(), gemsTypeQuantity = gemQuantity, gemTypeMelody = gemMelody[gemType] });
 
             for (int gemIndex = 0; gemIndex < gemQuantity; gemIndex++)
-            {;
-
-                //Set diferent transform position to be initialized, depending on the row and column
-                float xPosition = this.transform.position.x + (gemIndex * spGem.bounds.size.x) + (gemIndex * 0.2f);
-                float yPosition = this.transform.position.y + ((gemType * spGem.bounds.size.y) + (gemType * 0.2f)) * -1;
-                Vector2 gemPosition = new Vector2(xPosition, yPosition);
-
+            {
                 //Instantiate Gem and Set a the new position to avoid collision error when gems are instantiated at the same place
                 GameObject createdGem = Instantiate(gems[gemType]);
+                //Set diferent transform position to be initialized, depending on the row and column
+                float xPosition = this.transform.position.x + (gemIndex * createdGem.GetComponent<CapsuleCollider2D>().bounds.size.x) + (gemIndex * 0.2f);
+                float yPosition = this.transform.position.y + ((gemType * createdGem.GetComponent<CapsuleCollider2D>().bounds.size.y) + (gemType * 0.2f)) * -1;
+                Vector2 gemPosition = new Vector2(xPosition, yPosition);
                 createdGem.transform.position = gemPosition;;
             }
         }
 
+        activeGemTypesList = gemTypesList;
         StartCoroutine(activeRandomGemType());
     }
 
@@ -100,7 +116,10 @@ public class GemGenerator : MonoBehaviour
             {
                 //If click on gem and current gemtype equal to hit gem gemtype
                 IClick clickOnGem = hits2D.collider.gameObject.GetComponent<IClick>();
-                if (clickOnGem != null && gemTypes[currentActiveGemType].GetComponent<GemType>().gemTypes == hits2D.collider.gameObject.GetComponent<GemType>().gemTypes) clickOnGem.onClickAction();
+                if (clickOnGem != null && activeGemTypesList[currentActiveGemType].gemType.GetComponent<GemType>().gemTypes == hits2D.collider.gameObject.GetComponent<GemType>().gemTypes) {
+                    clickOnGem.onClickAction();
+                    activeGemTypesList[currentActiveGemType].gemsTypeQuantity--;
+                };
             }
         }
     }
@@ -109,11 +128,19 @@ public class GemGenerator : MonoBehaviour
     {
         while (true)
         {
-            currentActiveGemType = UnityEngine.Random.Range(0, gemTypes.Length);
-            activeGemType = gemTypes[currentActiveGemType];
+            activeGemTypesList = activeGemTypesList.Where(activeGemType => activeGemType.gemsTypeQuantity > 0).ToList<GemTypes>();
+            if (activeGemTypesList.Count <= 0)
+            {
+                StopCoroutine(activeRandomGemType());
+                break;
+            };
+            currentActiveGemType = UnityEngine.Random.Range(0, activeGemTypesList.Count);
+            audioSource.clip = activeGemTypesList[currentActiveGemType].gemTypeMelody;
+            audioSource.Play();
+            activeGemType = activeGemTypesList[currentActiveGemType].gemType;
             OnUpdateCurrentGemType?.Invoke();
 
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(2f);
         }
     }
 }

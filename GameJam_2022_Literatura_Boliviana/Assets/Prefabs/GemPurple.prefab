@@ -70,6 +70,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05f1262855f1fbd4aa7dd1641594e5ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gemMusic: {fileID: 8300000, guid: 95cec2fbe54596e429a629151c2d6d8e, type: 3}
   initialVelocity: 4
   minVelocity: 5
   maxVelocity: 6
@@ -101,7 +102,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.8, y: 1}
+  m_Size: {x: 1, y: 1.2}
   m_Direction: 0
 --- !u!1 &6171536375992499332
 GameObject:
