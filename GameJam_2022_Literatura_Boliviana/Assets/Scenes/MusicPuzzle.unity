@@ -470,7 +470,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 332da3374e0299b4e8a4c788ba625152, type: 3}
   - {fileID: 8300000, guid: 95cec2fbe54596e429a629151c2d6d8e, type: 3}
   - {fileID: 8300000, guid: 30706178d2ee3264baf96983968e7b12, type: 3}
-  winSong: {fileID: 8300000, guid: aea9bb3fa51cbf64d8ed3e3a08884cc9, type: 3}
+  winSong: {fileID: 8300000, guid: 0f7cffee53b81eb468fbb77cdbb4feb8, type: 3}
   activeGemType: {fileID: 0}
 --- !u!61 &629151878
 BoxCollider2D:

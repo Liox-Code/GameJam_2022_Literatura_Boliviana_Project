@@ -44,3 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 203beac5ce2a02b4cb4168dfa08da5ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  facingDirection: {x: 0, y: 1}
+  placeName: AmarilloHouseWindow

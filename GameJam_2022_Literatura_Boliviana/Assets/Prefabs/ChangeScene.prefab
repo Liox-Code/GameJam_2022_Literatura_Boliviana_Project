@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bb622ee1e9c20d4e9a4b567e6037f83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  newPlaceName: 
+  newPlaceName: MusicPuzzle
+  goToPlaceName: 
 --- !u!61 &4231297765576930922
 BoxCollider2D:
   m_ObjectHideFlags: 0

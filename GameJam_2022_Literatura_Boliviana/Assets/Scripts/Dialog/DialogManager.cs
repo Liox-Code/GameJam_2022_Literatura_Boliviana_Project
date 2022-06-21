@@ -70,15 +70,17 @@ public class DialogManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null)
+        if (instance == null)
         {
-            Destroy(this.transform.gameObject);
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
             return;
         }
 
-        instance = this;
-
-        DontDestroyOnLoad(this.transform.gameObject);
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
