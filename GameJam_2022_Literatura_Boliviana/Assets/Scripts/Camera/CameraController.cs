@@ -14,13 +14,17 @@ public class CameraController : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null)
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Update()
