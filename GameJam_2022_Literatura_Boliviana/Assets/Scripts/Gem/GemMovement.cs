@@ -70,7 +70,7 @@ public class GemMovement : MonoBehaviour, IClick
         //Debug.Log(rbGem.velocity.magnitude);
         if (collision.gameObject.CompareTag("Wall"))
         {
-            rbGem.velocity = ClampMagnitudeMaxMin(rbGem.velocity / velocityDivider, maxVelocity, minVelocity);
+            //rbGem.velocity = ClampMagnitudeMaxMin(rbGem.velocity / velocityDivider, maxVelocity, minVelocity);
         }
         if (collision.gameObject.CompareTag("Gem"))
         {

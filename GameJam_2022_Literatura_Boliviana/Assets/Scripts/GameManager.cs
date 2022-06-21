@@ -13,14 +13,16 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null)
-        {
-            Destroy(gameObject);
-        }
-        else
+        if (instance == null)
         {
             instance = this;
         }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         DontDestroyOnLoad(gameObject);
 
         SceneManager.activeSceneChanged += HidePlayer;
@@ -44,6 +46,21 @@ public class GameManager : MonoBehaviour
             if (PlayerController.instance.gameObject != null)
             {
                 CameraController.instance.followTarget = PlayerController.instance.gameObject;
+            }
+        }
+
+        if (newScene.name == "AmarilloHouse")
+        {
+            if (QuestManager.instance == null)
+            {
+                return;
+            }
+
+            if (QuestManager.instance.questObject[2].quest.gameObject.activeInHierarchy
+                && !QuestManager.instance.questObject[2].questState
+                && QuestManager.instance.questObject[2].quest.questId == QuestType.QuestId.QUEST_0_INITIAL_CONVERSATION)
+            {
+                QuestManager.instance.questObject[2].quest.CompleteQuest();
             }
         }
     }

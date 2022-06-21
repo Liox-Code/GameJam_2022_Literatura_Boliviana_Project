@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
 
     public static PlayerController instance;
 
+    public AudioClip audioClip;
+
     private void OnMove(InputValue movementValue)
     {
         Vector2 movement = movementValue.Get<Vector2>();

@@ -44,7 +44,12 @@ public class QuestManager : MonoBehaviour
 
     public void MisionCompleted(QuestType.QuestId completedQuestId)
     {
-        Debug.Log(completedQuestId);
+        //Debug.Log("Completado "+completedQuestId);
+        if (completedQuestId == QuestType.QuestId.QUEST_0_INITIAL_CONVERSATION)
+        {
+            DialogManager.instance.currentDialog = "Dialog_1";
+            DialogManager.instance.ShowMessage("Habla con el robot Amarillo dentro de su casa.");
+        }
         if (completedQuestId == QuestType.QuestId.QUEST_1_MUSIC_PUZZLE)
         {
             DialogManager.instance.currentDialog = "Dialog_2";

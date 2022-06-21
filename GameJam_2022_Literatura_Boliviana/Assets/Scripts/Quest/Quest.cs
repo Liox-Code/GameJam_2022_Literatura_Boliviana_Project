@@ -10,6 +10,10 @@ public class Quest : MonoBehaviour
     public void StartQuest()
     {
         Debug.Log($"Comenzar mision {questId}");
+        if (questId == QuestType.QuestId.QUEST_0_INITIAL_CONVERSATION)
+        {
+            DialogManager.instance.ShowMessage("Entra a la casa de el Robot Amarillo.");
+        }
         if (questId == QuestType.QuestId.QUEST_1_MUSIC_PUZZLE)
         {
             DialogManager.instance.ShowMessage("Ve a la ventana central en la casa de Amarillo.");

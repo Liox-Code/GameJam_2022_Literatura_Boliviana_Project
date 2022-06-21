@@ -19,7 +19,26 @@ public class DialogManager : MonoBehaviour
     public string currentDialog;
     Dictionary<string, dialogLinesScript[]> diologScript = new Dictionary<string, dialogLinesScript[]>()
     {
-        {"Dialog_1", new dialogLinesScript[2]{
+        {"Dialog_0", new dialogLinesScript[9]{
+            new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "¿Señorita?" },
+            new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Este… disculpe…  quería saber si conoce quién habitaba o usaba aquel edificio." },
+            new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "Hace tiempo que vivo yo solo. ¿Por qué? La licencia y los catastros están en orden…" },
+            new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Represento a Hidrotratamientos LN Iven. Queríamos constatar el estado de su propiedad para comprarla." },
+            new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Mi empresa desea usar este terreno para un nuevo modelo de planta generadora de agua, basado en el tipo de contaminación particulada de esta parte de la ciudad." },
+            new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "La sección de presupuestos me ha autorizado a ofrecer 400 mil latinos por el terreno." },
+            new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "Ya ni saben qué comprar… ¿No decía que por la casa?  " },
+            new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Consideraremos que el terreno le pertenece. No hay habitantes en al menos tres hectáreas cuadradas." },
+            new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "Sí, sí, los muy hijos de puta vienen a quitarnos nuestras tierras para cambiarlas y luego revendérnoslas más caras. Voy a hacer que fije el precio por la oportunidad de rechazar su dinero de mierda. Venga, le mostraré." }
+        }},
+        {"Dialog_1", new dialogLinesScript[10]{
+            new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "Y creo que querían quedarse un buen tiempo. Mire nomás que instalaron hasta una capilla aquí. ¿Qué le parece? " },
+            new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Pintoresca. Creo que estas imágenes podrían valuar más el costo de la propiedad, señor... " },
+            new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "Amarillo. " },
+            new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Amarillo... " },
+            new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "Así, sin apellido. Ahí en la policía me censaron por el número de serie de mis partes y ahora mi nombre oficial es un montón de números. Hay que ser hijo de puta para hacerle eso a alguien. " },
+            new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Señor Amarillo, ¿podemos ver otros espacios de su propiedad? Necesito por lo menos un setenta por ciento antes de dar un estimado. Luego, si el precio le parece bien, recomiendo..." },
+            new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "Vamos a ver mi sala de estudio, casi todo lo demás son escombros, he  estado tratando de ordenar, pero no hay mucha diferencia un poco de desorden o mucho." },
+            new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Yo lo sigo. " },
             new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Un espacio con un cristal intacto. Esto es mucho mejor de lo que esperaba. ¿Qué clase de estudio realiza en este lugar, señor? " },
             new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "Religioso. Puede ver lo que quiera, yo tengo que terminar un informe. Le doy un par de minutos. Luego dígame cuánto puede pagar y, no sé, la mandaré a la mierda.  " }
         }},
@@ -91,7 +110,7 @@ public class DialogManager : MonoBehaviour
 
         audioSource = GetComponent<AudioSource>();
 
-        currentDialog = "Dialog_1";
+        currentDialog = "Dialog_0";
         ShowMessage("Habla con el robot Amarillo.");
     }
 
@@ -137,6 +156,11 @@ public class DialogManager : MonoBehaviour
     {
         messageBakground.SetActive(false);
         StopAllCoroutines();
+        if (currentDialog == "Dialog_2")
+        {
+            PlayerController.instance.GetComponent<AudioSource>().clip = PlayerController.instance.audioClip;
+            PlayerController.instance.GetComponent<AudioSource>().Play();
+        }
         if (currentDialogLine >= 0 && currentDialogLine < dialogLines.Length)
         {
             DialogActors.ActorType talkingActor = dialogLines[currentDialogLine].actor;
@@ -174,6 +198,9 @@ public class DialogManager : MonoBehaviour
                 {
                     continue;
                 }
+
+                //Debug.Log(!questObject.quest.gameObject.activeInHierarchy);
+                //Debug.Log(!questObject.questState);
 
                 if (currentDialog == questObject.questDialog
                     && !questObject.quest.gameObject.activeInHierarchy
