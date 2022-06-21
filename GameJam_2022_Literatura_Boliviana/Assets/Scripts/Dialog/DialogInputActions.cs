@@ -59,7 +59,7 @@ public partial class @DialogInputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""f569b2af-d195-4e59-b0da-bab69dc28972"",
-                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -70,7 +70,7 @@ public partial class @DialogInputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4f85e79b-c67c-4f03-9339-ab5b570c64cd"",
-                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
