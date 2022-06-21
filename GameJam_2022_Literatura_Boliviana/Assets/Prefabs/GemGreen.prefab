@@ -101,7 +101,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 1.2}
+  m_Size: {x: 1, y: 1}
   m_Direction: 0
 --- !u!1 &6171536375992499332
 GameObject:
@@ -113,7 +113,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1831188109872805701}
   - component: {fileID: 4405546245642265796}
-  - component: {fileID: 868145366827208885}
   m_Layer: 0
   m_Name: GemSprite
   m_TagString: Untagged
@@ -177,7 +176,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2059725342, guid: dd4a0df4eae4293488449dd12552be50, type: 3}
+  m_Sprite: {fileID: 1944527292, guid: 35d2abc6798331f41989755c9f790a56, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -188,22 +187,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!70 &868145366827208885
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6171536375992499332}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.6, y: 0.7}
-  m_Direction: 0
 --- !u!1 &8249944776388209286
 GameObject:
   m_ObjectHideFlags: 0

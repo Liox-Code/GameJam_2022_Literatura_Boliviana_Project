@@ -16,14 +16,14 @@ public class DialogManager : MonoBehaviour
         public string dialogLine;
     }
 
-    private string currentDialog;
+    public string currentDialog;
     Dictionary<string, dialogLinesScript[]> diologScript = new Dictionary<string, dialogLinesScript[]>()
     {
         {"Dialog_1", new dialogLinesScript[2]{
             new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Un espacio con un cristal intacto. Esto es mucho mejor de lo que esperaba. ¿Qué clase de estudio realiza en este lugar, señor? " },
             new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "Religioso. Puede ver lo que quiera, yo tengo que terminar un informe. Le doy un par de minutos. Luego dígame cuánto puede pagar y, no sé, la mandaré a la mierda.  " }
         }},
-        {"Dialog_2", new dialogLinesScript[13]{
+        {"Dialog_2", new dialogLinesScript[15]{
             new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "¿Qué tal? ¿Cuánto crees que vale este montón de mierda?" },
             new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Vale un cielo de noche" },
             new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "¿Qué? " },
@@ -32,12 +32,17 @@ public class DialogManager : MonoBehaviour
             new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Me contrataron para encontrar a sus hijos. No me dirás que están bajo esa mesa que tienes ahí, ¿no? " },
             new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "¡Yo no sé nada! Tú no eres de ninguna empresa, ¿no?, ahora mismo vas dejar mi casa..." },
             new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Aunque a la gente no le parece, usualmente soy muy profesional. ¿Sabes qué significa eso? " },
-            new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "Y... Yo... no he hecho nada... Claudio fue el que quiso cambiar los parámetros. Yo estaba... estoy por llegar a una conclusión... hasta he cambiado mi centro neuronal para ver mejor lo que... lo que tenemos que ver... él es el que ha insistido en usar el ritual de los niños perdidos... " },
-            new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Déjame terminar, cabrón. Soy una profesional porque soy capaz de justificar la cantidad de dinero que pido a mis contratantes. Eficiencia es la palabra. Y hay cosas que son tan ineficientes que me horrorizan si me contratas a mí misma. Un interrogatorio con un robot demente, por ejemplo. O un cadáver por acá y allá, nunca es algo bueno." },
+            new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "Y... Yo... no he hecho nada... Claudio fue el que quiso cambiar los parámetros." },
+            new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "Yo estaba... estoy por llegar a una conclusión... hasta he cambiado mi centro neuronal para ver mejor lo que... lo que tenemos que ver... él es el que ha insistido en usar el ritual de los niños perdidos... " },
+            new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Déjame terminar, cabrón. Soy una profesional porque soy capaz de justificar la cantidad de dinero que pido a mis contratantes." },
+            new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Eficiencia es la palabra. Y hay cosas que son tan ineficientes que me horrorizan si me contratas a mí misma. Un interrogatorio con un robot demente, por ejemplo. O un cadáver por acá y allá, nunca es algo bueno." },
             new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "Por favor... yo no sé dónde se ha ido... pero sé más o menos lo que quería... " },
             new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Y claro que sabes, sólo que no voy a perder tiempo sacándole la información. Ahora, respira profundo, Amarillo" },
             new dialogLinesScript { actor = DialogActors.ActorType.CARMILA, dialogLine = "Así que clonaste tus propios órganos. Y vibran… " },
-        }}
+        }},
+        {"Dialog_3", new dialogLinesScript[1]{
+            new dialogLinesScript { actor = DialogActors.ActorType.AMARILLO, dialogLine = "..... ..... ...... ......" }
+        }},
     };
 
     [System.Serializable]
@@ -54,6 +59,10 @@ public class DialogManager : MonoBehaviour
     [SerializeField] private GameObject dialogBackground;
     [SerializeField] private GameObject[] dialogActorsImages;
     [SerializeField] TextMeshProUGUI dialogText;
+
+    [SerializeField] private GameObject messageBakground;
+    [SerializeField] TextMeshProUGUI message;
+
     private AudioSource audioSource;
     [SerializeField] private float typingTime;
     [SerializeField] private float charsToPlaySound;
@@ -61,7 +70,6 @@ public class DialogManager : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log(instance);
         if (instance != null)
         {
             Destroy(this.transform.gameObject);
@@ -81,11 +89,12 @@ public class DialogManager : MonoBehaviour
 
         audioSource = GetComponent<AudioSource>();
 
-        currentDialog = "Dialog_1"; 
+        currentDialog = "Dialog_1";
+        ShowMessage("Habla con el robot Amarillo.");
     }
 
     public void ShowDialog()
-    {;
+    {
         dialogController.Enable();
         dialogActive = true;
         dialogBackground.SetActive(true);
@@ -114,7 +123,6 @@ public class DialogManager : MonoBehaviour
 
     private void PreviousDialog()
     {
-        //Debug.Log("PreviousDialog");
         currentDialogLine--;
         if (currentDialogLine < 0)
         {
@@ -125,6 +133,7 @@ public class DialogManager : MonoBehaviour
 
     private void setDialogText (int currentDialogLine)
     {
+        messageBakground.SetActive(false);
         StopAllCoroutines();
         if (currentDialogLine >= 0 && currentDialogLine < dialogLines.Length)
         {
@@ -156,14 +165,21 @@ public class DialogManager : MonoBehaviour
         if (currentDialogLine >= dialogLines.Length)
         {
             CloseDialog();
-            if (QuestManager.instance.questObject[0] == null)
+
+            foreach (QuestManager.QuestObject questObject in QuestManager.instance.questObject)
             {
-                Debug.Log("No existe la mision en posicion 0");
-            };
-            if (currentDialog == "Dialog_1" && !QuestManager.instance.questObject[0].quest.gameObject.activeInHierarchy && !QuestManager.instance.questObject[0].questState)
-            {
-                QuestManager.instance.questObject[0].quest.gameObject.SetActive(true);
-                QuestManager.instance.questObject[0].quest.StartQuest();
+                if (questObject.quest == null)
+                {
+                    continue;
+                }
+
+                if (currentDialog == questObject.questDialog
+                    && !questObject.quest.gameObject.activeInHierarchy
+                    && !questObject.questState)
+                {
+                    questObject.quest.gameObject.SetActive(true);
+                    questObject.quest.StartQuest();
+                }
             }
         }
     }
@@ -186,6 +202,25 @@ public class DialogManager : MonoBehaviour
 
             yield return new WaitForSeconds(typingTime);
         }
+    }
+
+    public void ToogleMessage()
+    {
+        StopCoroutine(CloseMessage());
+        messageBakground.SetActive(!messageBakground.activeInHierarchy);
+    }
+
+    public void ShowMessage(string messageText)
+    {
+        messageBakground.SetActive(true);
+        message.text = messageText;
+        StartCoroutine(CloseMessage());
+    }
+
+    IEnumerator CloseMessage()
+    {
+        yield return new WaitForSeconds(3);
+        messageBakground.SetActive(false);
     }
 
 }
