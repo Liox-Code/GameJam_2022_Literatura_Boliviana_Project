@@ -9,12 +9,12 @@ public class QuestManager : MonoBehaviour
     [System.Serializable]
     public class QuestObject
     {
-        public string questDialog;
         public Quest quest;
         public bool questState = false;
     }
 
-    public QuestObject[] questObject;
+    public QuestObject[] questsObject;
+    [HideInInspector] public QuestObject currentQuest = null;
 
     public static Action OnMissionStart;
 
@@ -33,32 +33,66 @@ public class QuestManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void MisionStarted(QuestType.QuestId startedQuestId)
+    private void Start()
     {
-        Debug.Log($"Started quest {startedQuestId}");
-        if (startedQuestId == QuestType.QuestId.QUEST_1_MUSIC_PUZZLE)
+        QuestStarted();
+    }
+
+    private QuestObject SetCurrentQuest(int questIndex)
+    {
+        QuestObject newCurrentQuest = null;
+
+        if (questIndex < questsObject.Length && questIndex >= 0)
         {
-            OnMissionStart?.Invoke();;
+            newCurrentQuest = questsObject[questIndex];
+        }
+
+        return newCurrentQuest;
+    }
+
+    private QuestObject NextQuest(int questIndex)
+    {
+        return SetCurrentQuest((questIndex + 1)) ?? SetCurrentQuest(questIndex);
+    }
+    private QuestObject Previous(int questIndex)
+    {
+        return SetCurrentQuest((questIndex - 1)) ?? SetCurrentQuest(questIndex);
+    }
+
+    public void QuestStarted()
+    {
+        int currentQuestIndex = Array.FindIndex(questsObject, questObjetc => questObjetc.Equals(currentQuest));
+        Debug.Log(currentQuestIndex);
+        if (currentQuestIndex >= 0 && 
+            currentQuestIndex < questsObject.Length)
+        {
+            currentQuest = NextQuest(currentQuestIndex);
+            Debug.Log("nEXXT");
+        }
+        if (currentQuestIndex < 0 || currentQuestIndex >= questsObject.Length)
+        {
+            currentQuest = SetCurrentQuest(0);
+        }
+
+        if (currentQuest.quest &&
+            !currentQuest.quest.gameObject.activeInHierarchy &&
+            !currentQuest.questState)
+        {
+            OnMissionStart?.Invoke();
+            currentQuest.quest.gameObject.SetActive(true);
+            currentQuest.quest.StartQuest();
         }
     }
 
-    public void MisionCompleted(QuestType.QuestId completedQuestId)
+    public void QuestCompleted()
     {
-        //Debug.Log("Completado "+completedQuestId);
-        if (completedQuestId == QuestType.QuestId.QUEST_0_INITIAL_CONVERSATION)
+        if (currentQuest != null &&
+            currentQuest.quest.gameObject.activeInHierarchy &&
+            !currentQuest.questState)
         {
-            DialogManager.instance.currentDialog = "Dialog_1";
-            DialogManager.instance.ShowMessage("Habla con el robot Amarillo dentro de su casa.");
-        }
-        if (completedQuestId == QuestType.QuestId.QUEST_1_MUSIC_PUZZLE)
-        {
-            DialogManager.instance.currentDialog = "Dialog_2";
-            DialogManager.instance.ShowMessage("Vuelve a hablar con Amarillo.");
-        }
-        if (completedQuestId == QuestType.QuestId.QUEST_2_FIND_HEARTH)
-        {
-            DialogManager.instance.currentDialog = "Dialog_3";
-            DialogManager.instance.ShowMessage("Felicidades, terminaste todas las quests.");
+            currentQuest.quest.CompleteQuest();
+            currentQuest.questState = true;
+            currentQuest.quest.gameObject.SetActive(false);
         }
     }
 }

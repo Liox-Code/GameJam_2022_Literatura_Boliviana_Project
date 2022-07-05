@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3838218095028083775}
   - component: {fileID: 3838218095028083776}
   m_Layer: 0
-  m_Name: Quest1_MusicPuzzle
+  m_Name: Quest2_MusicPuzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3838218096511183948}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3838218095028083776
 MonoBehaviour:
@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6f654c9c416c2f478e754836a76b391, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questId: 1
+  questId: 2
 --- !u!1 &3838218095903531546
 GameObject:
   m_ObjectHideFlags: 0
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 3838218095903531547}
   - component: {fileID: 3838218095903531548}
   m_Layer: 0
-  m_Name: Quest2_FindHeartPuzzle
+  m_Name: Quest3_FindHeartPuzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3838218096511183948}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3838218095903531548
 MonoBehaviour:
@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6f654c9c416c2f478e754836a76b391, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questId: 2
+  questId: 3
 --- !u!1 &3838218096511183946
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,6 +119,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5367407810384435678}
   - {fileID: 1905591321790103447}
   - {fileID: 3838218095028083775}
   - {fileID: 3838218095903531547}
@@ -137,15 +138,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: badd0ac4c8e7aeb49821b27afb82c823, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questObject:
-  - questDialog: Dialog_1
-    quest: {fileID: 3838218095028083776}
+  questsObject:
+  - quest: {fileID: 5204704353788897237}
     questState: 0
-  - questDialog: Dialog_2
-    quest: {fileID: 3838218095903531548}
+  - quest: {fileID: 9198930931318149745}
     questState: 0
-  - questDialog: Dialog_0
-    quest: {fileID: 9198930931318149745}
+  - quest: {fileID: 3838218095028083776}
+    questState: 0
+  - quest: {fileID: 3838218095903531548}
+    questState: 0
+  currentQuest:
+    quest: {fileID: 0}
     questState: 0
 --- !u!1 &6812802548599482748
 GameObject:
@@ -158,7 +161,7 @@ GameObject:
   - component: {fileID: 1905591321790103447}
   - component: {fileID: 9198930931318149745}
   m_Layer: 0
-  m_Name: Quest0_InitialConversation
+  m_Name: Quest1_InitialConversation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -177,7 +180,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3838218096511183948}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9198930931318149745
 MonoBehaviour:
@@ -186,6 +189,51 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6812802548599482748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f654c9c416c2f478e754836a76b391, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questId: 1
+--- !u!1 &7558102420527905641
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5367407810384435678}
+  - component: {fileID: 5204704353788897237}
+  m_Layer: 0
+  m_Name: Quest0_Init
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5367407810384435678
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7558102420527905641}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3838218096511183948}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5204704353788897237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7558102420527905641}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6f654c9c416c2f478e754836a76b391, type: 3}

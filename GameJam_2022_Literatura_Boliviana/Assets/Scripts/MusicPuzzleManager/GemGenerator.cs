@@ -14,9 +14,6 @@ public class GemGenerator : MonoBehaviour
     //Singleton
     public static GemGenerator instance;
 
-    // Define MouseController of the new Input System on Unity
-    private MusicPuzzle mouseController;
-
     [SerializeField] private GameObject PauseMenu;
 
     // Define Gems Quantity of all types
@@ -29,7 +26,7 @@ public class GemGenerator : MonoBehaviour
 
     [SerializeField] private AudioClip[] gemMelody;
 
-    class GemTypes
+    public class GemTypes
     {
         public GemType gemType;
         public int gemsTypeQuantity;
@@ -37,7 +34,7 @@ public class GemGenerator : MonoBehaviour
     }
 
     List<GemTypes> gemTypesList = new List<GemTypes>();
-    List<GemTypes> activeGemTypesList;
+    public List<GemTypes> activeGemTypesList;
     public AudioClip winSong;
 
 
@@ -45,14 +42,10 @@ public class GemGenerator : MonoBehaviour
     public GemType activeGemType;
 
     //Define current Gemtype able to be destroyed
-    private int currentActiveGemType;
+    public int currentActiveGemType;
 
     public static Action OnUpdateCurrentGemType;
-
-    private void OnDisable()
-    {
-        mouseController.Disable();
-    }
+    public static Action OnGemDestroy;
 
     private void Awake()
     {
@@ -68,12 +61,6 @@ public class GemGenerator : MonoBehaviour
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-
-        // Activate mouse controler and add StartedClickFunction when click started;
-        mouseController = new MusicPuzzle();
-        mouseController.Enable();
-        mouseController.Mouse.Click.started += ctx => ClickObject();
-        mouseController.UI.ToggleMenu.started += ctx => ToggleMenu();
 
         //2 Loops to instantiate Gem per Row and Column
         for (int gemType = 0; gemType < gems.Length; gemType++)
@@ -99,40 +86,18 @@ public class GemGenerator : MonoBehaviour
         activeGemTypesList = gemTypesList;
         StartCoroutine(activeRandomGemType());
         DialogManager.instance.ShowMessage("Haz click en los fractales para destruirlos, solo se pueden destruir los fractales activos.");
+
+        OnGemDestroy += GemDestroyed;
+    }
+
+    private void OnDisable()
+    {
+        OnGemDestroy -= GemDestroyed;
     }
 
     private void ToggleMenu()
     {
         //PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
-    }
-
-    private void ClickObject()
-    {
-        // Raycast to get mouse position when clicked has started
-        Ray ray = CameraController.instance.GetComponent<Camera>().ScreenPointToRay(mouseController.Mouse.Position.ReadValue<Vector2>());
-        RaycastHit2D hits2D = Physics2D.GetRayIntersection(ray);
-        if (hits2D.collider != null)
-        {
-            //If hit a gameobject with a Gem tag
-            if (hits2D.collider.gameObject.CompareTag("Gem"))
-            {
-                //If click on gem and current gemtype equal to hit gem gemtype
-                IClick clickOnGem = hits2D.collider.gameObject.GetComponent<IClick>();
-                if (clickOnGem != null && activeGemTypesList[currentActiveGemType].gemType.GetComponent<GemType>().gemTypes == hits2D.collider.gameObject.GetComponent<GemType>().gemTypes) {
-                    clickOnGem.onClickAction();
-                    activeGemTypesList[currentActiveGemType].gemsTypeQuantity--;
-
-                    if (activeGemTypesList[currentActiveGemType].gemsTypeQuantity <= 0)
-                    {
-                        activeGemTypesList = activeGemTypesList.Where(activeGemType => activeGemType.gemsTypeQuantity > 0).ToList<GemTypes>();
-                        if (activeGemTypesList.Count <= 0)
-                        {
-                            PuzzleCompleted();
-                        };
-                    }
-                };
-            }
-        }
     }
 
     IEnumerator activeRandomGemType()
@@ -155,7 +120,21 @@ public class GemGenerator : MonoBehaviour
         }
     }
 
-    private void PuzzleCompleted()
+    public void GemDestroyed()
+    {
+        activeGemTypesList[currentActiveGemType].gemsTypeQuantity--;
+
+        if (activeGemTypesList[currentActiveGemType].gemsTypeQuantity <= 0)
+        {
+            activeGemTypesList = activeGemTypesList.Where(activeGemType => activeGemType.gemsTypeQuantity > 0).ToList<GemTypes>();
+            if (activeGemTypesList.Count <= 0)
+            {
+                PuzzleCompleted();
+            }
+        }
+    }
+
+    public void PuzzleCompleted()
     {
         audioSource.clip = winSong;
         audioSource.Play();
@@ -167,9 +146,9 @@ public class GemGenerator : MonoBehaviour
             return;
         }
 
-        if (QuestManager.instance.questObject[0].quest.gameObject.activeInHierarchy && !QuestManager.instance.questObject[0].questState && QuestManager.instance.questObject[0].quest.questId == QuestType.QuestId.QUEST_1_MUSIC_PUZZLE)
+        if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_2_MUSIC_PUZZLE)
         {
-            QuestManager.instance.questObject[0].quest.CompleteQuest();
+            QuestManager.instance.QuestCompleted();
         }
     }
 

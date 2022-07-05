@@ -10,22 +10,10 @@ public class GoToNewPlace : MonoBehaviour
 
     private void Start()
     {
-        QuestManager.OnMissionStart += ShowGoToNewPlace;
     }
 
     private void OnDisable()
     {
-        QuestManager.OnMissionStart -= ShowGoToNewPlace;
-    }
-
-    private void ShowGoToNewPlace()
-    {
-
-    }
-
-    private void HideGoToNewPlace()
-    {
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -39,11 +27,22 @@ public class GoToNewPlace : MonoBehaviour
                     PlayerController.instance.nextPlaceName = goToPlaceName;
                 }
 
+                if (newPlaceName == "AmarilloHouse")
+                {
+                    if (QuestManager.instance.currentQuest.quest != null &&
+                        QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_1_INITIAL_CONVERSATION)
+                    {
+                        QuestManager.instance.QuestCompleted();
+                        Debug.Log("In Amarillo House");
+                    }
+                }
+
                 if (newPlaceName == "MusicPuzzle")
                 {
-                    if (QuestManager.instance.questObject[0].quest.gameObject.activeInHierarchy
-                        && !QuestManager.instance.questObject[0].questState 
-                        && QuestManager.instance.questObject[0].quest.questId == QuestType.QuestId.QUEST_1_MUSIC_PUZZLE)
+                    if (QuestManager.instance.currentQuest.quest != null && 
+                        QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_2_MUSIC_PUZZLE &&
+                        QuestManager.instance.currentQuest.quest.gameObject.activeInHierarchy &&
+                        !QuestManager.instance.currentQuest.questState)
                     {
                         SceneManager.LoadScene(newPlaceName);
                     }

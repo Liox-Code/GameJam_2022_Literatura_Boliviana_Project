@@ -9,16 +9,21 @@ public class Quest : MonoBehaviour
 
     public void StartQuest()
     {
-        Debug.Log($"Comenzar mision {questId}");
-        if (questId == QuestType.QuestId.QUEST_0_INITIAL_CONVERSATION)
+        Debug.Log($"Start Mission {questId}");
+        if (questId == QuestType.QuestId.QUEST_0_INIT)
+        {
+            DialogManager.instance.currentDialog = DialogTypes.DialogType.DIALOG_1;
+            DialogManager.instance.ShowMessage("Habla con el robot Amarillo.");
+        }
+        if (questId == QuestType.QuestId.QUEST_1_INITIAL_CONVERSATION)
         {
             DialogManager.instance.ShowMessage("Entra a la casa de el Robot Amarillo.");
         }
-        if (questId == QuestType.QuestId.QUEST_1_MUSIC_PUZZLE)
+        if (questId == QuestType.QuestId.QUEST_2_MUSIC_PUZZLE)
         {
             DialogManager.instance.ShowMessage("Ve a la ventana central en la casa de Amarillo.");
         }
-        if (questId == QuestType.QuestId.QUEST_2_FIND_HEARTH)
+        if (questId == QuestType.QuestId.QUEST_3_FIND_HEARTH)
         {
             DialogManager.instance.ShowMessage("Encuentra y recoge una bolsa de organos alrededor de la casa de Amarillo.");
         }
@@ -26,14 +31,21 @@ public class Quest : MonoBehaviour
 
     public void CompleteQuest()
     {
-        foreach (QuestManager.QuestObject objectQuestId in QuestManager.instance.questObject)
+        Debug.Log($"Completed Mission {questId}");
+        if (questId == QuestType.QuestId.QUEST_1_INITIAL_CONVERSATION)
         {
-            if (objectQuestId.quest.questId == questId)
-            {
-                objectQuestId.questState = true;
-                gameObject.SetActive(false);
-                QuestManager.instance.MisionCompleted(questId);
-            }
+            DialogManager.instance.currentDialog = DialogTypes.DialogType.DIALOG_2;
+            DialogManager.instance.ShowMessage("Habla con el robot Amarillo dentro de su casa.");
+        }
+        if (questId == QuestType.QuestId.QUEST_2_MUSIC_PUZZLE)
+        {
+            DialogManager.instance.currentDialog = DialogTypes.DialogType.DIALOG_3;
+            DialogManager.instance.ShowMessage("Vuelve a hablar con Amarillo.");
+        }
+        if (questId == QuestType.QuestId.QUEST_3_FIND_HEARTH)
+        {
+            DialogManager.instance.currentDialog = DialogTypes.DialogType.DIALOG_4;
+            StartCoroutine(DialogManager.instance.ShowCredits());
         }
     }
 

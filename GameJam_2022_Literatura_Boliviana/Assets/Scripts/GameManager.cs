@@ -55,13 +55,6 @@ public class GameManager : MonoBehaviour
             {
                 return;
             }
-
-            if (QuestManager.instance.questObject[2].quest.gameObject.activeInHierarchy
-                && !QuestManager.instance.questObject[2].questState
-                && QuestManager.instance.questObject[2].quest.questId == QuestType.QuestId.QUEST_0_INITIAL_CONVERSATION)
-            {
-                QuestManager.instance.questObject[2].quest.CompleteQuest();
-            }
         }
     }
 }

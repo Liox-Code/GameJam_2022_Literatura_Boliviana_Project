@@ -6,9 +6,10 @@ public class QuestType : MonoBehaviour
 {
     public enum QuestId
     {
-        QUEST_0_INITIAL_CONVERSATION,
-        QUEST_1_MUSIC_PUZZLE,
-        QUEST_2_FIND_HEARTH
+        QUEST_0_INIT,
+        QUEST_1_INITIAL_CONVERSATION,
+        QUEST_2_MUSIC_PUZZLE,
+        QUEST_3_FIND_HEARTH
     }
 
     public QuestId questId;

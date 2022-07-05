@@ -15,18 +15,21 @@ public class NPCDialog : MonoBehaviour
         npcController.Enable();
         npcController.NPC.OpenDialog.started += ctx => TalkNPC();
 
-        if (!QuestManager.instance.questObject[2].quest.gameObject.activeInHierarchy
-            && !QuestManager.instance.questObject[2].questState
-            && QuestManager.instance.questObject[2].quest.questId == QuestType.QuestId.QUEST_0_INITIAL_CONVERSATION
-            && SceneManager.GetActiveScene().name == "AmarilloHouse")
+        if (QuestManager.instance.currentQuest.quest == null)
+        {
+            Debug.LogWarning("CurrentQuest quest is Null");
+            return;
+        }
+
+        if (QuestManager.instance.currentQuest.quest.questId != QuestType.QuestId.QUEST_0_INIT
+            && SceneManager.GetActiveScene().name == "Desert")
         {
             gameObject.transform.parent.gameObject.SetActive(false);
         }
 
-        if ((QuestManager.instance.questObject[2].quest.gameObject.activeInHierarchy
-            || QuestManager.instance.questObject[2].questState) 
-            && QuestManager.instance.questObject[2].quest.questId == QuestType.QuestId.QUEST_0_INITIAL_CONVERSATION
-            && SceneManager.GetActiveScene().name == "Desert")
+        if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_0_INIT
+            && !QuestManager.instance.currentQuest.questState
+            && SceneManager.GetActiveScene().name != "Desert")
         {
             gameObject.transform.parent.gameObject.SetActive(false);
         }
@@ -34,18 +37,16 @@ public class NPCDialog : MonoBehaviour
 
     private void OnDisable()
     {
+        QuestManager.OnMissionStart -= NPCDisapear;
         npcController.Disable();
     }
 
     private void TalkNPC()
     {
+
         if (playerOnZone)
         {
             DialogManager.instance.ShowDialog();
-            if (gameObject.GetComponentInParent<NPCMovement>() != null)
-            {
-                gameObject.GetComponentInParent<NPCMovement>().isTalking = true;
-            }
         }
     }
 
@@ -53,7 +54,12 @@ public class NPCDialog : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_0_INIT)
+            {
+                QuestManager.OnMissionStart += NPCDisapear;
+            }
             playerOnZone = true;
+            DialogManager.instance.Talk(true);
         }
     }
 
@@ -61,7 +67,32 @@ public class NPCDialog : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_0_INIT)
+            {
+                QuestManager.OnMissionStart -= NPCDisapear;
+            }
             playerOnZone = false;
+            DialogManager.instance.Talk(false);
         }
+    }
+
+    public void NPCDisapear()
+    {
+        QuestManager.OnMissionStart -= NPCDisapear;
+        StartCoroutine(BlinkRountine());
+    }
+
+    IEnumerator BlinkRountine()
+    {
+        int blinkTime = 10;
+        while (blinkTime > 0)
+        {
+            transform.parent.GetComponent<SpriteRenderer>().enabled = false;
+            yield return new WaitForSeconds(blinkTime * 0.01f);
+            transform.parent.GetComponent<SpriteRenderer>().enabled = true;
+            yield return new WaitForSeconds(blinkTime * 0.01f);
+            blinkTime--;
+        }
+        transform.parent.gameObject.SetActive(false);
     }
 }

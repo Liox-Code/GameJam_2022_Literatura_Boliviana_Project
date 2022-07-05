@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class GemMovement : MonoBehaviour, IClick
+public class GemMovement : MonoBehaviour
 {
     [SerializeField] private float initialVelocity = 4f;
     [Range(1.1f,6)][SerializeField] private float minVelocity = 2;
@@ -48,12 +48,6 @@ public class GemMovement : MonoBehaviour, IClick
         rbGem.velocity = new Vector2(xVelocity, yVelocity) * initialVelocity;
     }
 
-    public void onClickAction()
-    {
-        GemGenerator.OnUpdateCurrentGemType -= activateCircle;
-        Destroy(gameObject);
-    }
-
     private void activateCircle()
     {
         bool isActive = (GemGenerator.instance.activeGemType.gemTypes == gameObject.GetComponent<GemType>().gemTypes);
@@ -76,6 +70,16 @@ public class GemMovement : MonoBehaviour, IClick
         {
 
             rbGem.velocity = ClampMagnitudeMaxMin(rbGem.velocity * velocityMultiplier, maxVelocity, minVelocity);
+        }
+        //If hit a gameobject with a Gem tag
+        if (collision.gameObject.CompareTag("DotPlayer"))
+        {
+            if (GemGenerator.instance.activeGemTypesList[GemGenerator.instance.currentActiveGemType].gemType.GetComponent<GemType>().gemTypes == gameObject.GetComponent<GemType>().gemTypes)
+            {
+                GemGenerator.OnUpdateCurrentGemType -= activateCircle;
+                GemGenerator.OnGemDestroy?.Invoke();
+                Destroy(gameObject);
+            }
         }
     }
 
