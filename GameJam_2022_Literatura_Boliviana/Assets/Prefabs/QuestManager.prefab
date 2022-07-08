@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3838218095028083775}
   - component: {fileID: 3838218095028083776}
   m_Layer: 0
-  m_Name: Quest2_MusicPuzzle
+  m_Name: Quest_MusicPuzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3838218096511183948}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3838218095028083776
 MonoBehaviour:
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 3838218095903531547}
   - component: {fileID: 3838218095903531548}
   m_Layer: 0
-  m_Name: Quest3_FindHeartPuzzle
+  m_Name: Quest_FindHeartPuzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3838218096511183948}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3838218095903531548
 MonoBehaviour:
@@ -121,6 +121,7 @@ Transform:
   m_Children:
   - {fileID: 5367407810384435678}
   - {fileID: 1905591321790103447}
+  - {fileID: 8151408061683446544}
   - {fileID: 3838218095028083775}
   - {fileID: 3838218095903531547}
   m_Father: {fileID: 0}
@@ -143,6 +144,8 @@ MonoBehaviour:
     questState: 0
   - quest: {fileID: 9198930931318149745}
     questState: 0
+  - quest: {fileID: 8309128300670328673}
+    questState: 0
   - quest: {fileID: 3838218095028083776}
     questState: 0
   - quest: {fileID: 3838218095903531548}
@@ -161,7 +164,7 @@ GameObject:
   - component: {fileID: 1905591321790103447}
   - component: {fileID: 9198930931318149745}
   m_Layer: 0
-  m_Name: Quest1_InitialConversation
+  m_Name: Quest_InitialConversation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -206,7 +209,7 @@ GameObject:
   - component: {fileID: 5367407810384435678}
   - component: {fileID: 5204704353788897237}
   m_Layer: 0
-  m_Name: Quest0_Init
+  m_Name: Quest_Init
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -240,3 +243,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   questId: 0
+--- !u!1 &8553367192675900967
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8151408061683446544}
+  - component: {fileID: 8309128300670328673}
+  m_Layer: 0
+  m_Name: Quest_WatchThroughWindow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &8151408061683446544
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8553367192675900967}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3838218096511183948}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8309128300670328673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8553367192675900967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f654c9c416c2f478e754836a76b391, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questId: 4

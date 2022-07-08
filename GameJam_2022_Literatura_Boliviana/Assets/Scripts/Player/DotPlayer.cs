@@ -14,11 +14,10 @@ public class DotPlayer : MonoBehaviour
     private Vector2 direction;
     private Rigidbody2D rbDotPlayer;
 
-    private void Start()
+    private void OnEnable()
     {
         dotPlayerController = new DotPlayerController();
         dotPlayerController.DotPlayer_1.Movement.Enable();
-        dotPlayerController.DotPlayer_2.Movement.Enable();
 
         rbDotPlayer = GetComponent<Rigidbody2D>();
     }
@@ -26,7 +25,6 @@ public class DotPlayer : MonoBehaviour
     private void OnDisable()
     {
         dotPlayerController.DotPlayer_1.Movement.Disable();
-        dotPlayerController.DotPlayer_2.Movement.Disable();
     }
 
     private void Update()
@@ -34,10 +32,6 @@ public class DotPlayer : MonoBehaviour
         if (DotPlayerTypes.dotPlayer.Player_1 == dotPlayerType)
         {
             direction = dotPlayerController.DotPlayer_1.Movement.ReadValue<Vector2>();
-        }
-        if (DotPlayerTypes.dotPlayer.Player_2 == dotPlayerType)
-        {
-            direction = dotPlayerController.DotPlayer_2.Movement.ReadValue<Vector2>();
         }
         rbDotPlayer.velocity = direction * speed;
     }

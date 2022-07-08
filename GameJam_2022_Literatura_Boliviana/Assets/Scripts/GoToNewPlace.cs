@@ -27,29 +27,7 @@ public class GoToNewPlace : MonoBehaviour
                     PlayerController.instance.nextPlaceName = goToPlaceName;
                 }
 
-                if (newPlaceName == "AmarilloHouse")
-                {
-                    if (QuestManager.instance.currentQuest.quest != null &&
-                        QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_1_INITIAL_CONVERSATION)
-                    {
-                        QuestManager.instance.QuestCompleted();
-                        Debug.Log("In Amarillo House");
-                    }
-                }
-
-                if (newPlaceName == "MusicPuzzle")
-                {
-                    if (QuestManager.instance.currentQuest.quest != null && 
-                        QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_2_MUSIC_PUZZLE &&
-                        QuestManager.instance.currentQuest.quest.gameObject.activeInHierarchy &&
-                        !QuestManager.instance.currentQuest.questState)
-                    {
-                        SceneManager.LoadScene(newPlaceName);
-                    }
-                    return;
-                }
-
-                SceneManager.LoadScene(newPlaceName);
+                GameManager.instance.changeScene(newPlaceName);
             }
         }
     }

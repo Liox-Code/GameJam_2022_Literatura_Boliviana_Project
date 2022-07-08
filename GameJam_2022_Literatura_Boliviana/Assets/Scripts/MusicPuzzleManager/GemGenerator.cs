@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(AudioSource))]
@@ -14,6 +15,7 @@ public class GemGenerator : MonoBehaviour
     //Singleton
     public static GemGenerator instance;
 
+    private bool isGameOver;
     [SerializeField] private GameObject PauseMenu;
 
     // Define Gems Quantity of all types
@@ -95,9 +97,13 @@ public class GemGenerator : MonoBehaviour
         OnGemDestroy -= GemDestroyed;
     }
 
-    private void ToggleMenu()
+    private void Update()
     {
-        //PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
+        if (isGameOver && Keyboard.current.anyKey.wasPressedThisFrame && GameManager.instance != null)
+        {
+            PlayerController.instance.nextPlaceName = "AmarilloHouseWindow";
+            GameManager.instance.changeScene("AmarilloHouse");
+        }
     }
 
     IEnumerator activeRandomGemType()
@@ -146,7 +152,7 @@ public class GemGenerator : MonoBehaviour
             return;
         }
 
-        if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_2_MUSIC_PUZZLE)
+        if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_MUSIC_PUZZLE)
         {
             QuestManager.instance.QuestCompleted();
         }
@@ -155,5 +161,6 @@ public class GemGenerator : MonoBehaviour
     IEnumerator ShowPauseMenu() {
         yield return new WaitForSeconds(2);
         PauseMenu.SetActive(true);
+        isGameOver = true;
     }
 }

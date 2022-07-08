@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class QuestManager : MonoBehaviour
 {
@@ -62,25 +63,30 @@ public class QuestManager : MonoBehaviour
     public void QuestStarted()
     {
         int currentQuestIndex = Array.FindIndex(questsObject, questObjetc => questObjetc.Equals(currentQuest));
-        Debug.Log(currentQuestIndex);
-        if (currentQuestIndex >= 0 && 
-            currentQuestIndex < questsObject.Length)
-        {
-            currentQuest = NextQuest(currentQuestIndex);
-            Debug.Log("nEXXT");
-        }
+        Debug.Log($"Started {currentQuestIndex} && {questsObject.Length}");
         if (currentQuestIndex < 0 || currentQuestIndex >= questsObject.Length)
         {
             currentQuest = SetCurrentQuest(0);
-        }
-
-        if (currentQuest.quest &&
-            !currentQuest.quest.gameObject.activeInHierarchy &&
-            !currentQuest.questState)
-        {
             OnMissionStart?.Invoke();
             currentQuest.quest.gameObject.SetActive(true);
             currentQuest.quest.StartQuest();
+        }
+        if (currentQuest.questState)
+        {
+            if (currentQuestIndex >= 0 && 
+                currentQuestIndex < questsObject.Length)
+            {
+                currentQuest = NextQuest(currentQuestIndex);
+            }
+
+            if (currentQuest.quest &&
+                !currentQuest.quest.gameObject.activeInHierarchy &&
+                !currentQuest.questState)
+            {
+                OnMissionStart?.Invoke();
+                currentQuest.quest.gameObject.SetActive(true);
+                currentQuest.quest.StartQuest();
+            }
         }
     }
 
@@ -90,9 +96,16 @@ public class QuestManager : MonoBehaviour
             currentQuest.quest.gameObject.activeInHierarchy &&
             !currentQuest.questState)
         {
-            currentQuest.quest.CompleteQuest();
+            int currentQuestIndex = Array.FindIndex(questsObject, questObjetc => questObjetc.Equals(currentQuest));
+            Debug.Log($"Complete {currentQuestIndex} && {questsObject.Length}"); 
             currentQuest.questState = true;
             currentQuest.quest.gameObject.SetActive(false);
+            currentQuest.quest.CompleteQuest();
+            if (currentQuestIndex == questsObject.Length - 1)
+            {
+                StartCoroutine(DialogManager.instance.ShowCredits());
+            }
         }
+
     }
 }

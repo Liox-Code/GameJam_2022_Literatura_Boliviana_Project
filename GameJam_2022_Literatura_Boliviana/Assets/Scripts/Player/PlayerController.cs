@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -24,15 +24,10 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D playerRigidbody;
 
     public static PlayerController instance;
+    private PlayerInputAction playerInputAction;
+    public Action playerInteract;
 
     public AudioClip audioClip;
-
-    private void OnMove(InputValue movementValue)
-    {
-        Vector2 movement = movementValue.Get<Vector2>();
-        movementX = movement.x;
-        movementY = movement.y;
-    }
 
     private void Awake()
     {
@@ -47,10 +42,37 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private void OnEnable()
+    {
+        playerInputAction = new PlayerInputAction();
+        playerInputAction.Player.Move.Enable();
+        playerInputAction.Player.Interact.Enable();
+        playerInputAction.Player.Interact.started += _ => OnInteract();
+    }
+
+    private void OnDisable()
+    {
+        if (playerInputAction != null)
+        {
+            if(playerInputAction.Player.Move.enabled) playerInputAction.Player.Move.Disable();
+            if (playerInputAction.Player.Interact.enabled) playerInputAction.Player.Interact.Disable();
+            if (playerInteract != null) playerInteract = null;
+        }
+    }
+
+    private void OnInteract()
+    {
+        playerInteract?.Invoke();
+    }
+
     private void Start()
     {
         animator = GetComponent<Animator>();
         playerRigidbody = GetComponent<Rigidbody2D>();
+        //playerInputAction = new PlayerInputAction();
+        //playerInputAction.Player.Move.Enable();
+        //playerInputAction.Player.Interact.Enable();
+        //playerInputAction.Player.Interact.started += _ => OnInteract();
     }
 
     private void Update()
@@ -63,6 +85,9 @@ public class PlayerController : MonoBehaviour
         };
 
         isWalking = false;
+        Vector2 movementValue = playerInputAction.Player.Move.ReadValue<Vector2>();
+        movementX = movementValue.x;
+        movementY = movementValue.y;
         if (movementX > 0.5 || movementX < -0.5)
         {
             //this.transform.Translate(movementX * speed * Time.deltaTime, 0, 0);

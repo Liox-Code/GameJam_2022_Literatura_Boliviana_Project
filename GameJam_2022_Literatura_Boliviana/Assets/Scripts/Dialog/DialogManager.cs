@@ -81,6 +81,9 @@ public class DialogManager : MonoBehaviour
     [SerializeField] private GameObject[] dialogActorsImages;
     [SerializeField] TextMeshProUGUI dialogText;
     [SerializeField] private GameObject talkButton;
+    public bool dialogActive;
+    private bool showAllText;
+    private IEnumerator showLine;
 
     [SerializeField] private GameObject messageBackground;
     [SerializeField] TextMeshProUGUI message;
@@ -90,7 +93,6 @@ public class DialogManager : MonoBehaviour
     private AudioSource audioSource;
     [SerializeField] private float typingTime;
     [SerializeField] private float charsToPlaySound;
-    public bool dialogActive;
 
     private void Awake()
     {
@@ -154,6 +156,14 @@ public class DialogManager : MonoBehaviour
 
     private void NextDialog()
     {
+        if (!showAllText)
+        {
+            showAllText = true;
+            dialogText.text = dialogLines[currentDialogLine].dialogLine;
+            StopCoroutine(showLine);
+            return;
+        }
+        showAllText = false;
         currentDialogLine++;
         SetDialogText(currentDialogLine);
     }
@@ -202,18 +212,23 @@ public class DialogManager : MonoBehaviour
             }
 
             //dialogText.text = dialogLines[currentDialogLine].dialogLine;
-            StartCoroutine(ShowLine(dialogLines[currentDialogLine].dialogLine));
+            showLine = ShowLine(dialogLines[currentDialogLine].dialogLine);
+            StartCoroutine(showLine);
         }
         if (currentDialogLine >= dialogLines.Length)
         {
             CloseDialog();
-
-            if (QuestManager.instance.currentQuest.quest != null && QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_0_INIT)
-            {
-                QuestManager.instance.QuestCompleted();
-            }
             if (QuestManager.instance != null)
             {
+                if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_MUSIC_PUZZLE)
+                {
+                    GameManager.instance.changeScene("MusicPuzzle");
+                }
+
+                if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_INIT)
+                {
+                    QuestManager.instance.QuestCompleted();
+                }
                 QuestManager.instance.QuestStarted();
             }
         }
@@ -223,7 +238,6 @@ public class DialogManager : MonoBehaviour
     {
         dialogText.text = string.Empty;
         int charIndex = 0;
-
         foreach (char ch in dialogLine)
         {
             dialogText.text += ch;
@@ -262,11 +276,6 @@ public class DialogManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         creditsBackground.SetActive(true);
-    }
-
-    public void RestartGame()
-    {
-        SceneManager.LoadScene("Desert");
     }
 
     public void Talk(bool wantTalk)

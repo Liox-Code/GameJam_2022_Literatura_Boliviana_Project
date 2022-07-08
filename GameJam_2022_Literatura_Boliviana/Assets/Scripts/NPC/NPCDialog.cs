@@ -21,13 +21,13 @@ public class NPCDialog : MonoBehaviour
             return;
         }
 
-        if (QuestManager.instance.currentQuest.quest.questId != QuestType.QuestId.QUEST_0_INIT
+        if (QuestManager.instance.currentQuest.quest.questId != QuestType.QuestId.QUEST_INIT
             && SceneManager.GetActiveScene().name == "Desert")
         {
             gameObject.transform.parent.gameObject.SetActive(false);
         }
 
-        if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_0_INIT
+        if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_INIT
             && !QuestManager.instance.currentQuest.questState
             && SceneManager.GetActiveScene().name != "Desert")
         {
@@ -47,6 +47,10 @@ public class NPCDialog : MonoBehaviour
         if (playerOnZone)
         {
             DialogManager.instance.ShowDialog();
+            if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_INITIAL_CONVERSATION && SceneManager.GetActiveScene().name == "AmarilloHouse")
+            {
+                QuestManager.instance.QuestCompleted();
+            }
         }
     }
 
@@ -54,7 +58,7 @@ public class NPCDialog : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_0_INIT)
+            if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_INIT)
             {
                 QuestManager.OnMissionStart += NPCDisapear;
             }
@@ -67,7 +71,7 @@ public class NPCDialog : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_0_INIT)
+            if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_INIT)
             {
                 QuestManager.OnMissionStart -= NPCDisapear;
             }
@@ -85,6 +89,7 @@ public class NPCDialog : MonoBehaviour
     IEnumerator BlinkRountine()
     {
         int blinkTime = 10;
+        gameObject.GetComponent<BoxCollider2D>().enabled = false;
         while (blinkTime > 0)
         {
             transform.parent.GetComponent<SpriteRenderer>().enabled = false;
@@ -93,6 +98,7 @@ public class NPCDialog : MonoBehaviour
             yield return new WaitForSeconds(blinkTime * 0.01f);
             blinkTime--;
         }
+        gameObject.GetComponent<BoxCollider2D>().enabled = true;
         transform.parent.gameObject.SetActive(false);
     }
 }

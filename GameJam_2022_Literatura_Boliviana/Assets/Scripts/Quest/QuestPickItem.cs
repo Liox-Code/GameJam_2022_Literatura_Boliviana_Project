@@ -20,7 +20,7 @@ public class QuestPickItem : MonoBehaviour
             return;
         }
 
-        if (QuestManager.instance.currentQuest.quest.questId != QuestType.QuestId.QUEST_3_FIND_HEARTH)
+        if (QuestManager.instance.currentQuest.quest.questId != QuestType.QuestId.QUEST_FIND_HEARTH)
         {
             gameObject.SetActive(false);
         }
@@ -35,7 +35,7 @@ public class QuestPickItem : MonoBehaviour
                 return;
             }
 
-            if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_3_FIND_HEARTH)
+            if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_FIND_HEARTH)
             {
                 audioSource.Play();
                 StartCoroutine(HideItem());

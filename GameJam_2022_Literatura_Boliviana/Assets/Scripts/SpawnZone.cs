@@ -17,7 +17,7 @@ public class SpawnZone : MonoBehaviour
         }
 
         PlayerController.instance.transform.position = this.transform.position;
-        CameraController.instance.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, CameraController.instance.transform.position.y);
+        CameraController.instance.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, CameraController.instance.transform.position.z);
 
         PlayerController.instance.lastMovement = facingDirection;
     }
