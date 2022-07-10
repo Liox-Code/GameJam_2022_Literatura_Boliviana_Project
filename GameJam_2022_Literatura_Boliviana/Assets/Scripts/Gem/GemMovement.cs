@@ -13,7 +13,7 @@ public class GemMovement : MonoBehaviour
 
     private float velocityMultiplier = 1.1f;
     private float velocityDivider = 1.1f;
-
+    private bool isGemActive;
     private bool reduceCircleSizeEnabled = false;
 
     private Rigidbody2D rbGem;
@@ -50,11 +50,12 @@ public class GemMovement : MonoBehaviour
 
     private void activateCircle()
     {
-        bool isActive = (GemGenerator.instance.activeGemType.gemTypes == gameObject.GetComponent<GemType>().gemTypes);
-        gameObject.transform.Find("Circle").gameObject.SetActive(isActive);
+        isGemActive = (GemGenerator.instance.activeGemType.gemTypes == gameObject.GetComponent<GemType>().gemTypes);
+        gameObject.transform.Find("Circle").gameObject.SetActive(isGemActive);
         gameObject.transform.Find("Circle").gameObject.transform.localScale = new Vector3(2, 2, 0);
         if (!reduceCircleSizeEnabled)
         {
+            StopCoroutine(reduceCircleSize());
             StartCoroutine(reduceCircleSize());
         }
     }
@@ -74,7 +75,7 @@ public class GemMovement : MonoBehaviour
         //If hit a gameobject with a Gem tag
         if (collision.gameObject.CompareTag("DotPlayer"))
         {
-            if (GemGenerator.instance.activeGemTypesList[GemGenerator.instance.currentActiveGemType].gemType.GetComponent<GemType>().gemTypes == gameObject.GetComponent<GemType>().gemTypes)
+            if (isGemActive)
             {
                 GemGenerator.OnUpdateCurrentGemType -= activateCircle;
                 GemGenerator.OnGemDestroy?.Invoke();
@@ -91,7 +92,6 @@ public class GemMovement : MonoBehaviour
             yield return new WaitForSeconds(0.05f);;
             if (gameObject.transform.Find("Circle").gameObject.transform.localScale.x < 0 && gameObject.transform.Find("Circle").gameObject.transform.localScale.y < 0)
             {
-                Debug.Log("LESS");
                 reduceCircleSizeEnabled = false;
                 StopCoroutine(reduceCircleSize());
                 break;

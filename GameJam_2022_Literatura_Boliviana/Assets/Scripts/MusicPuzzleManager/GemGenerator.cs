@@ -49,6 +49,8 @@ public class GemGenerator : MonoBehaviour
     public static Action OnUpdateCurrentGemType;
     public static Action OnGemDestroy;
 
+    private IEnumerator activeRandomGemTypes;
+
     private void Awake()
     {
         if (instance != null)
@@ -86,7 +88,8 @@ public class GemGenerator : MonoBehaviour
         }
 
         activeGemTypesList = gemTypesList;
-        StartCoroutine(activeRandomGemType());
+        activeRandomGemTypes = ActiveRandomGemType();
+        StartCoroutine(activeRandomGemTypes);
         DialogManager.instance.ShowMessage("Haz click en los fractales para destruirlos, solo se pueden destruir los fractales activos.");
 
         OnGemDestroy += GemDestroyed;
@@ -106,7 +109,7 @@ public class GemGenerator : MonoBehaviour
         }
     }
 
-    IEnumerator activeRandomGemType()
+    IEnumerator ActiveRandomGemType()
     {
         while (true)
         {
@@ -132,6 +135,9 @@ public class GemGenerator : MonoBehaviour
 
         if (activeGemTypesList[currentActiveGemType].gemsTypeQuantity <= 0)
         {
+            StopCoroutine(activeRandomGemTypes);
+            Debug.Log("Stop");
+            StartCoroutine(activeRandomGemTypes);
             activeGemTypesList = activeGemTypesList.Where(activeGemType => activeGemType.gemsTypeQuantity > 0).ToList<GemTypes>();
             if (activeGemTypesList.Count <= 0)
             {
@@ -145,7 +151,7 @@ public class GemGenerator : MonoBehaviour
         audioSource.clip = winSong;
         audioSource.Play();
         StartCoroutine(ShowPauseMenu());
-        StopCoroutine(activeRandomGemType());
+        StopCoroutine(activeRandomGemTypes);
 
         if (QuestManager.instance == null)
         {
