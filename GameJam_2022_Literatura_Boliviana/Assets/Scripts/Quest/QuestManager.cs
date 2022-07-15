@@ -63,7 +63,6 @@ public class QuestManager : MonoBehaviour
     public void QuestStarted()
     {
         int currentQuestIndex = Array.FindIndex(questsObject, questObjetc => questObjetc.Equals(currentQuest));
-        Debug.Log($"Started {currentQuestIndex} && {questsObject.Length}");
         if (currentQuestIndex < 0 || currentQuestIndex >= questsObject.Length)
         {
             currentQuest = SetCurrentQuest(0);
@@ -97,13 +96,12 @@ public class QuestManager : MonoBehaviour
             !currentQuest.questState)
         {
             int currentQuestIndex = Array.FindIndex(questsObject, questObjetc => questObjetc.Equals(currentQuest));
-            Debug.Log($"Complete {currentQuestIndex} && {questsObject.Length}"); 
             currentQuest.questState = true;
             currentQuest.quest.gameObject.SetActive(false);
             currentQuest.quest.CompleteQuest();
             if (currentQuestIndex == questsObject.Length - 1)
             {
-                StartCoroutine(DialogManager.instance.ShowCredits());
+                StartCoroutine(GameManager.instance.ShowCredits());
             }
         }
 

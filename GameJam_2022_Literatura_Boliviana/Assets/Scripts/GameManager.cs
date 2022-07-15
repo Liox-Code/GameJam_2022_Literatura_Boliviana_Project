@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Playables;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,7 +20,11 @@ public class GameManager : MonoBehaviour
     private bool isInit;
     [SerializeField] private Image transitionImage;
     [SerializeField] private float transitionSpeed = 2f;
-    [SerializeField] private bool shouldReveal;
+    [SerializeField] private Image restartCircleImage;
+    [SerializeField] private float restartCircleDurationSec = 1f;
+    private bool isChanging;
+
+    [HideInInspector] public string currentScene;
 
     private void Awake()
     {
@@ -37,16 +42,20 @@ public class GameManager : MonoBehaviour
 
         SceneManager.activeSceneChanged += HidePlayer;
 
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 30;
+        
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
-
 
     private void OnEnable()
     {
         playerInputAction = new PlayerInputAction();
         playerInputAction.UI.Restart.Enable();
-        playerInputAction.UI.Restart.started += _ => OnRestart();
+        playerInputAction.UI.Restart.started += _ => OnRestartStart();
+        playerInputAction.UI.Restart.performed += _ => OnRestart();
+        playerInputAction.UI.Restart.canceled += _ => OnRestartCancel();
     }
 
     private void Update()
@@ -59,7 +68,10 @@ public class GameManager : MonoBehaviour
 
     private void HidePlayer(Scene oldScene, Scene newScene)
     {
+        currentScene = newScene.name;
+
         StopAllCoroutines();
+        isChanging = false;
         StartCoroutine(transitionOpen());
         if (newScene.name == "Init")
         {
@@ -106,9 +118,56 @@ public class GameManager : MonoBehaviour
         //}
     }
 
+    private void OnRestartStart()
+    {
+        if (isChanging || isInit)
+        {
+            return;
+        }
+        restartCircleImage.gameObject.SetActive(true);
+        restartCircleImage.material.SetFloat("_Percentage", 1);
+        StartCoroutine(RestartLoading());
+    }
+
+    private void OnRestartCancel()
+    {
+        restartCircleImage.gameObject.SetActive(false);
+        restartCircleImage.material.SetFloat("_Percentage", 1);
+    }
+
     private void OnRestart()
     {
+        restartCircleImage.gameObject.SetActive(false);
+        restartCircleImage.material.SetFloat("_Percentage", 1);
+        if (isChanging || isInit)
+        {
+            return;
+        }
         StopAllCoroutines();
+        DestroyGameobjects();
+        changeScene("Init");
+    }
+
+    IEnumerator RestartLoading()
+    {
+        bool isTransitionOver = false;
+        restartCircleImage.material.SetFloat("_Percentage", 1);
+        while (!isTransitionOver)
+        {
+            if (restartCircleImage.material.GetFloat("_Percentage") != 0)
+            {
+                restartCircleImage.material.SetFloat("_Percentage", Mathf.MoveTowards(restartCircleImage.material.GetFloat("_Percentage"), 0f, restartCircleDurationSec * Time.deltaTime));
+            }
+            else
+            {
+                isTransitionOver = true;
+            }
+            yield return null;
+        }
+    }
+
+    private void DestroyGameobjects()
+    {
         if (DialogManager.instance != null)
         {
             Destroy(DialogManager.instance.gameObject);
@@ -125,17 +184,20 @@ public class GameManager : MonoBehaviour
         {
             Destroy(PlayerController.instance.gameObject);
         }
-        changeScene("Init");
     }
 
     public void changeScene(string sceneName)
     {
-        StopAllCoroutines();
-        if (PlayerController.instance)
+        if (!isChanging)
         {
-            PlayerController.instance.isTalking = true;
+            isChanging = true;
+            StopAllCoroutines();
+            if (PlayerController.instance)
+            {
+                PlayerController.instance.isTalking = true;
+            }
+            StartCoroutine(transitionClose(sceneName));
         }
-        StartCoroutine(transitionClose(sceneName));
     }
 
 
@@ -179,6 +241,7 @@ public class GameManager : MonoBehaviour
             }
             yield return null;
         }
+        isChanging = false;
 
         if (sceneName == "MusicPuzzle")
         {
@@ -190,5 +253,12 @@ public class GameManager : MonoBehaviour
             }
         }
         SceneManager.LoadSceneAsync(sceneName);
+    }
+
+    public IEnumerator ShowCredits()
+    {
+        yield return new WaitForSeconds(1);
+        DestroyGameobjects();
+        changeScene("Credits");
     }
 }

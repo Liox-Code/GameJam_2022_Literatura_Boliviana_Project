@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(AudioSource))]
@@ -15,8 +16,12 @@ public class GemGenerator : MonoBehaviour
     //Singleton
     public static GemGenerator instance;
 
-    private bool isGameOver;
+    public bool isPuzzleOver;
+    public bool puzzleFailed;
+    public bool puzzleSucced;
     [SerializeField] private GameObject PauseMenu;
+    [SerializeField] private TextMeshProUGUI PauseMenuText;
+
 
     // Define Gems Quantity of all types
     [Range(1, 20)] [SerializeField] private int gemQuantity = 1;
@@ -24,6 +29,10 @@ public class GemGenerator : MonoBehaviour
     //Define Gem prefab to be instantiated and the SpriteRenderer to get the Size of the sprite
     [SerializeField] private GameObject[] gems;
     private SpriteRenderer spGem;
+
+    [Range(0, 10)] [SerializeField] private float velocityIncreaser = 0;
+    [Range(1.1f, 8)] public float minVelocity = 2f;
+    [Range(1.1f, 8)] public float maxVelocity = 4f;
 
 
     [SerializeField] private AudioClip[] gemMelody;
@@ -102,10 +111,24 @@ public class GemGenerator : MonoBehaviour
 
     private void Update()
     {
-        if (isGameOver && Keyboard.current.anyKey.wasPressedThisFrame && GameManager.instance != null)
+        if (puzzleSucced)
         {
-            PlayerController.instance.nextPlaceName = "AmarilloHouseWindow";
-            GameManager.instance.changeScene("AmarilloHouse");
+            PauseMenuText.text = "Presione cualquie tecla para salir del minijuego.";
+
+            if (Keyboard.current.anyKey.wasPressedThisFrame && GameManager.instance != null)
+            {
+                PlayerController.instance.nextPlaceName = "AmarilloHouseWindow";
+                GameManager.instance.changeScene("AmarilloHouse");
+            }
+        }
+        if (puzzleFailed)
+        {
+            if(!PauseMenu.activeInHierarchy) PauseMenu.SetActive(true);
+            PauseMenuText.text = "Presione para reintentar el minijuego.";
+            if (Keyboard.current.anyKey.wasPressedThisFrame && GameManager.instance != null)
+            {
+                GameManager.instance.changeScene("MusicPuzzle");
+            }
         }
     }
 
@@ -132,11 +155,12 @@ public class GemGenerator : MonoBehaviour
     public void GemDestroyed()
     {
         activeGemTypesList[currentActiveGemType].gemsTypeQuantity--;
+        maxVelocity += velocityIncreaser;
+        maxVelocity += velocityIncreaser;
 
         if (activeGemTypesList[currentActiveGemType].gemsTypeQuantity <= 0)
         {
             StopCoroutine(activeRandomGemTypes);
-            Debug.Log("Stop");
             StartCoroutine(activeRandomGemTypes);
             activeGemTypesList = activeGemTypesList.Where(activeGemType => activeGemType.gemsTypeQuantity > 0).ToList<GemTypes>();
             if (activeGemTypesList.Count <= 0)
@@ -150,7 +174,7 @@ public class GemGenerator : MonoBehaviour
     {
         audioSource.clip = winSong;
         audioSource.Play();
-        StartCoroutine(ShowPauseMenu());
+        StartCoroutine(GameOver());
         StopCoroutine(activeRandomGemTypes);
 
         if (QuestManager.instance == null)
@@ -164,9 +188,10 @@ public class GemGenerator : MonoBehaviour
         }
     }
 
-    IEnumerator ShowPauseMenu() {
+    IEnumerator GameOver() {
+        isPuzzleOver = true;
         yield return new WaitForSeconds(2);
-        PauseMenu.SetActive(true);
-        isGameOver = true;
+        if (!PauseMenu.activeInHierarchy) PauseMenu.SetActive(true);
+        puzzleSucced = true;
     }
 }

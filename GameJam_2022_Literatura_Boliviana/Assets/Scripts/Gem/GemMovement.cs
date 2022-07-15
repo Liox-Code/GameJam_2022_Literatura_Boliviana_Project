@@ -6,8 +6,6 @@ using UnityEngine;
 public class GemMovement : MonoBehaviour
 {
     [SerializeField] private float initialVelocity = 4f;
-    [Range(1.1f,6)][SerializeField] private float minVelocity = 2;
-    [Range(6, 10)] [SerializeField] private float maxVelocity = 6;
 
     [SerializeField] private Vector2 currentVelocity;
 
@@ -62,17 +60,37 @@ public class GemMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //Debug.Log(rbGem.velocity.magnitude);
-        if (collision.gameObject.CompareTag("Wall"))
+        float speed = rbGem.velocity.magnitude;
+        Vector2 direction = rbGem.velocity.normalized;
+        if (direction.x >= 0 && direction.x < 0.5)
         {
-            //rbGem.velocity = ClampMagnitudeMaxMin(rbGem.velocity / velocityDivider, maxVelocity, minVelocity);
+            direction.x = 0.5f;
         }
-        if (collision.gameObject.CompareTag("Gem"))
+        if (direction.x < 0 && direction.x > -0.5)
         {
+            direction.x = -0.5f;
+        }
+        if (direction.y >= 0 && direction.y < 0.5)
+        {
+            direction.y = 0.5f;
+        }
+        if (direction.y < 0 && direction.y > -0.5)
+        {
+            direction.y = -0.5f;
+        }
+        rbGem.velocity = ClampMagnitudeMaxMin(direction * speed * velocityMultiplier, GemGenerator.instance.maxVelocity, GemGenerator.instance.minVelocity);
 
-            rbGem.velocity = ClampMagnitudeMaxMin(rbGem.velocity * velocityMultiplier, maxVelocity, minVelocity);
-        }
-        //If hit a gameobject with a Gem tag
+        ////Debug.Log(rbGem.velocity.magnitude);
+        //if (collision.gameObject.CompareTag("Wall"))
+        //{
+        //    //rbGem.velocity = ClampMagnitudeMaxMin(rbGem.velocity / velocityDivider, maxVelocity, minVelocity);
+        //}
+        //if (collision.gameObject.CompareTag("Gem"))
+        //{
+
+        //    //rbGem.velocity = ClampMagnitudeMaxMin(rbGem.velocity * velocityMultiplier, GemGenerator.instance.maxVelocity, GemGenerator.instance.minVelocity);
+        //}
+        ////If hit a gameobject with a Gem tag
         if (collision.gameObject.CompareTag("DotPlayer"))
         {
             if (isGemActive)

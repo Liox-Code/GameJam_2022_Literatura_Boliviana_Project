@@ -20,5 +20,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MusicPuzzle.unity
     guid: 6b83246d30e8d784cb9f607c729180e7
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: 95e655a6b5be6d74c89cc6f4aa688fa4
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: f426d34a2765a9d49a356d416683f8e1, type: 2}

@@ -87,8 +87,6 @@ public class DialogManager : MonoBehaviour
 
     [SerializeField] private GameObject messageBackground;
     [SerializeField] TextMeshProUGUI message;
-    [SerializeField] private GameObject initBackground;
-    [SerializeField] private GameObject creditsBackground;
 
     private AudioSource audioSource;
     [SerializeField] private float typingTime;
@@ -109,7 +107,7 @@ public class DialogManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Start()
+    private void OnEnable()
     {
         dialogController = new DialogInputActions();
         dialogController.Dialog.NextDialog.started += ctx => NextDialog();
@@ -118,40 +116,63 @@ public class DialogManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    private void OnDisable()
+    {
+        if (dialogController != null)
+        {
+            if (dialogController.Dialog.enabled) dialogController.Dialog.Disable();
+        }
+    }
+
     private void Update()
     {
-        if (Keyboard.current.anyKey.wasPressedThisFrame)
+        if (GameManager.instance.currentScene == "MusicPuzzle" || GameManager.instance.currentScene == "Init" || GameManager.instance.currentScene == "Credits" || GameManager.instance.currentScene == null)
         {
-            if (initBackground.activeInHierarchy)
-            {
-                Debug.Log("hide init");
-                initBackground.SetActive(false);
-            }
+            messageBackground.SetActive(false);
+            Talk(false);
         }
+        else
+        {
+            messageBackground.SetActive(true);
+        }
+
+        //if (Keyboard.current.anyKey.wasPressedThisFrame)
+        //{
+        //    if (initBackground.activeInHierarchy)
+        //    {
+        //        initBackground.SetActive(false);
+        //    }
+        //}
     }
 
     public void ShowDialog()
     {
-        dialogController.Enable();
-        dialogActive = true;
-        dialogBackground.SetActive(true);
-        dialogLines = diologScript[currentDialog];
-        currentDialogLine = 0;
-        SetDialogText(currentDialogLine);
+        if (!dialogActive)
+        {
+            dialogController.Dialog.Enable();
+            dialogActive = true;
+            dialogBackground.SetActive(true);
+            dialogLines = diologScript[currentDialog];
+            currentDialogLine = 0;
+            SetDialogText(currentDialogLine);
 
-        PlayerController.instance.isTalking = true;
-        Talk(false);
+            PlayerController.instance.isTalking = true;
+            Talk(false);
+        }
     }
 
     public void CloseDialog()
     {
-        dialogController.Disable();
-        dialogActive = false;
-        dialogBackground.SetActive(false);
-        currentDialogLine = 0;
+        if (dialogActive)
+        {
+            dialogController.Dialog.Disable();
+            dialogActive = false;
+            dialogBackground.SetActive(false);
+            currentDialogLine = 0;
 
-        PlayerController.instance.isTalking = false;
-        Talk(true);
+            PlayerController.instance.isTalking = false;
+            //Talk(true);
+        }
     }
 
     private void NextDialog()
@@ -180,7 +201,6 @@ public class DialogManager : MonoBehaviour
 
     private void SetDialogText (int currentDialogLine)
     {
-        messageBackground.SetActive(false);
         StopAllCoroutines();
         if (currentDialog == DialogTypes.DialogType.DIALOG_2)
         {
@@ -255,7 +275,7 @@ public class DialogManager : MonoBehaviour
 
     public void ToogleMessage()
     {
-        StopCoroutine(CloseMessage());
+        //StopCoroutine(CloseMessage());
         messageBackground.SetActive(!messageBackground.activeInHierarchy);
     }
 
@@ -263,20 +283,14 @@ public class DialogManager : MonoBehaviour
     {
         messageBackground.SetActive(true);
         message.text = messageText;
-        StartCoroutine(CloseMessage());
+        //StartCoroutine(CloseMessage());
     }
 
-    IEnumerator CloseMessage()
-    {
-        yield return new WaitForSeconds(3);
-        messageBackground.SetActive(false);
-    }
-
-    public IEnumerator ShowCredits()
-    {
-        yield return new WaitForSeconds(1);
-        creditsBackground.SetActive(true);
-    }
+    //IEnumerator CloseMessage()
+    //{
+    //    yield return new WaitForSeconds(3);
+    //    messageBackground.SetActive(false);
+    //}
 
     public void Talk(bool wantTalk)
     {

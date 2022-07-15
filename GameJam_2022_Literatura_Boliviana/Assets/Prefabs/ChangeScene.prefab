@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4231297765576930920}
   - component: {fileID: 4231297765576930921}
   - component: {fileID: 4231297765576930922}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ChangeScene
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}

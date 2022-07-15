@@ -30,9 +30,9 @@ public class QuestInteractWith : MonoBehaviour
             if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_WATCH_THROUGH_WINDOW)
             {
                 if (PlayerController.instance != null) PlayerController.instance.playerInteract -= interactWithObject;
-                textSign.SetActive(false);
-                canvas.SetActive(false);
             }
+            textSign.SetActive(false);
+            canvas.SetActive(false);
         }
     }
 
@@ -40,7 +40,9 @@ public class QuestInteractWith : MonoBehaviour
     {
         isInteractionActive = !isInteractionActive;
         PlayerController.instance.isTalking = isInteractionActive;
+        if (!isInteractionActive) canvas.SetActive(false);
         objectDescription.SetActive(isInteractionActive);
+        textSign.SetActive(!isInteractionActive);
 
         if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_WATCH_THROUGH_WINDOW && !isInteractionActive)
         {

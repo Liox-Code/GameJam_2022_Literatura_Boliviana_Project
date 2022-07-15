@@ -5,15 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class NPCDialog : MonoBehaviour
 {
-    NPCInputActions npcController;
-
     private bool playerOnZone;
 
     private void Start()
     {
-        npcController = new NPCInputActions();
-        npcController.Enable();
-        npcController.NPC.OpenDialog.started += ctx => TalkNPC();
 
         if (QuestManager.instance.currentQuest.quest == null)
         {
@@ -38,7 +33,7 @@ public class NPCDialog : MonoBehaviour
     private void OnDisable()
     {
         QuestManager.OnMissionStart -= NPCDisapear;
-        npcController.Disable();
+        if (PlayerController.instance != null) PlayerController.instance.playerInteract -= TalkNPC;
     }
 
     private void TalkNPC()
@@ -46,6 +41,7 @@ public class NPCDialog : MonoBehaviour
 
         if (playerOnZone)
         {
+            if (PlayerController.instance != null) PlayerController.instance.playerInteract -= TalkNPC;
             DialogManager.instance.ShowDialog();
             if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_INITIAL_CONVERSATION && SceneManager.GetActiveScene().name == "AmarilloHouse")
             {
@@ -58,6 +54,7 @@ public class NPCDialog : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            if (PlayerController.instance != null) PlayerController.instance.playerInteract += TalkNPC;
             if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_INIT)
             {
                 QuestManager.OnMissionStart += NPCDisapear;
@@ -71,6 +68,7 @@ public class NPCDialog : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            if (PlayerController.instance != null) PlayerController.instance.playerInteract -= TalkNPC;
             if (QuestManager.instance.currentQuest.quest.questId == QuestType.QuestId.QUEST_INIT)
             {
                 QuestManager.OnMissionStart -= NPCDisapear;

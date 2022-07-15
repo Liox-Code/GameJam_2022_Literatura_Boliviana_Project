@@ -29,6 +29,11 @@ public class DotPlayer : MonoBehaviour
 
     private void Update()
     {
+        if (GemGenerator.instance.isPuzzleOver)
+        {
+            dotPlayerController.DotPlayer_1.Movement.Disable();
+        }
+
         if (DotPlayerTypes.dotPlayer.Player_1 == dotPlayerType)
         {
             direction = dotPlayerController.DotPlayer_1.Movement.ReadValue<Vector2>();
