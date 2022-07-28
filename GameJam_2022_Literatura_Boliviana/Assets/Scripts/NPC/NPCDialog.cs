@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class NPCDialog : MonoBehaviour
 {
+    [SerializeField] AudioClip teleportAudio;
     private bool playerOnZone;
 
     private void Start()
@@ -81,6 +82,9 @@ public class NPCDialog : MonoBehaviour
     public void NPCDisapear()
     {
         QuestManager.OnMissionStart -= NPCDisapear;
+        transform.parent.GetComponent<AudioSource>().clip = teleportAudio;
+        transform.parent.GetComponent<AudioSource>().loop = true;
+        transform.parent.GetComponent<AudioSource>().Play();
         StartCoroutine(BlinkRountine());
     }
 
@@ -97,6 +101,7 @@ public class NPCDialog : MonoBehaviour
             blinkTime--;
         }
         gameObject.GetComponent<BoxCollider2D>().enabled = true;
+        transform.parent.GetComponent<AudioSource>().Stop();
         transform.parent.gameObject.SetActive(false);
     }
 }

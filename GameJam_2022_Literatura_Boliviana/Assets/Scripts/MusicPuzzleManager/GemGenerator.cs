@@ -113,7 +113,7 @@ public class GemGenerator : MonoBehaviour
     {
         if (puzzleSucced)
         {
-            PauseMenuText.text = "Presione cualquie tecla para salir del minijuego.";
+            PauseMenuText.text = "Salir minijuego";
 
             if (Keyboard.current.anyKey.wasPressedThisFrame && GameManager.instance != null)
             {
@@ -124,7 +124,7 @@ public class GemGenerator : MonoBehaviour
         if (puzzleFailed)
         {
             if(!PauseMenu.activeInHierarchy) PauseMenu.SetActive(true);
-            PauseMenuText.text = "Presione para reintentar el minijuego.";
+            PauseMenuText.text = "Reiniciar minijuego";
             if (Keyboard.current.anyKey.wasPressedThisFrame && GameManager.instance != null)
             {
                 GameManager.instance.changeScene("MusicPuzzle");
@@ -155,7 +155,7 @@ public class GemGenerator : MonoBehaviour
     public void GemDestroyed()
     {
         activeGemTypesList[currentActiveGemType].gemsTypeQuantity--;
-        maxVelocity += velocityIncreaser;
+        minVelocity += velocityIncreaser;
         maxVelocity += velocityIncreaser;
 
         if (activeGemTypesList[currentActiveGemType].gemsTypeQuantity <= 0)

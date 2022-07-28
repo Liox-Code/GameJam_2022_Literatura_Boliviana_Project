@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1034698456708953909}
-  - component: {fileID: 1034698456708953911}
   - component: {fileID: 1034698456708953910}
   - component: {fileID: 6989422488077225558}
   - component: {fileID: 3136924425190029098}
+  - component: {fileID: 1034698456708953911}
   m_Layer: 8
   m_Name: GemPurple
   m_TagString: Gem
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1034698456708953907}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1831188109872805701}
@@ -37,27 +37,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1034698456708953911
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1034698456708953907}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 0.01
-  m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 0
-  m_Material: {fileID: 6200000, guid: a7c1d81ff9c70fe4faa0b7936ad06106, type: 2}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
 --- !u!114 &1034698456708953910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,6 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialVelocity: 4
   currentVelocity: {x: 0, y: 0}
+  rbGem: {fileID: 1034698456708953911}
 --- !u!114 &6989422488077225558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,6 +81,27 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 1}
   m_Direction: 0
+--- !u!50 &1034698456708953911
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034698456708953907}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.01
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 6200000, guid: a7c1d81ff9c70fe4faa0b7936ad06106, type: 2}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!1 &6171536375992499332
 GameObject:
   m_ObjectHideFlags: 0

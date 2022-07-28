@@ -14,7 +14,7 @@ public class GemMovement : MonoBehaviour
     private bool isGemActive;
     private bool reduceCircleSizeEnabled = false;
 
-    private Rigidbody2D rbGem;
+    [SerializeField]private Rigidbody2D rbGem;
 
     private void Awake()
     {
@@ -23,7 +23,6 @@ public class GemMovement : MonoBehaviour
 
     private void Start()
     {
-        rbGem = GetComponent<Rigidbody2D>();
         Launch();
     }
 

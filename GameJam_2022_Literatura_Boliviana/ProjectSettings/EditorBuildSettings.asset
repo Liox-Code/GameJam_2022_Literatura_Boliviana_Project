@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Init.unity
     guid: 8572b793c38494e4dacccb1eb44c71d1
   - enabled: 1
+    path: Assets/Scenes/InitCutScene.unity
+    guid: 38a86b4f1f3d6d046a6cf6bd54f20424
+  - enabled: 1
     path: Assets/Scenes/Desert.unity
     guid: ef18762f30f1da046a02ceb5b437e7d3
   - enabled: 1

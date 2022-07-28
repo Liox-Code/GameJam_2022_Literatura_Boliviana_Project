@@ -125,7 +125,7 @@ MonoBehaviour:
   nextPlaceName: 
   isTalking: 0
   lastMovement: {x: 0, y: 0}
-  audioClip: {fileID: 8300000, guid: b1193694e5da3bb418022043d8a512ef, type: 3}
+  audioClip: {fileID: 8300000, guid: c49c14316c87c0246993414cbf67fd9c, type: 3}
 --- !u!70 &4452986211121199535
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

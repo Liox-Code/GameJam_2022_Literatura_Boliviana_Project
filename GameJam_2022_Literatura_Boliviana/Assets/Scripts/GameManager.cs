@@ -26,6 +26,9 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector] public string currentScene;
 
+    IEnumerator transitionOpen;
+    IEnumerator transitionClose;
+
     private void Awake()
     {
         if (instance == null)
@@ -47,6 +50,8 @@ public class GameManager : MonoBehaviour
         
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
+        restartCircleImage.material.SetFloat("_Percentage", 1);
     }
 
     private void OnEnable()
@@ -62,7 +67,7 @@ public class GameManager : MonoBehaviour
     {
         if (Keyboard.current.anyKey.wasPressedThisFrame && !Keyboard.current.rKey.wasPressedThisFrame && isInit)
         {
-            changeScene("Desert");
+            changeScene("InitCutScene");
         }
     }
 
@@ -70,9 +75,11 @@ public class GameManager : MonoBehaviour
     {
         currentScene = newScene.name;
 
-        StopAllCoroutines();
+        if (transitionOpen != null) StopCoroutine(transitionOpen);
+        if (transitionClose != null) StopCoroutine(transitionClose);
         isChanging = false;
-        StartCoroutine(transitionOpen());
+        transitionOpen = TransitionOpen();
+        StartCoroutine(transitionOpen);
         if (newScene.name == "Init")
         {
             isInit = true;
@@ -120,7 +127,7 @@ public class GameManager : MonoBehaviour
 
     private void OnRestartStart()
     {
-        if (isChanging || isInit)
+        if (isInit)
         {
             return;
         }
@@ -143,7 +150,8 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
-        StopAllCoroutines();
+        if (transitionOpen != null) StopCoroutine(transitionOpen);
+        if (transitionClose != null) StopCoroutine(transitionClose);
         DestroyGameobjects();
         changeScene("Init");
     }
@@ -191,18 +199,20 @@ public class GameManager : MonoBehaviour
         if (!isChanging)
         {
             isChanging = true;
-            StopAllCoroutines();
+            if (transitionOpen != null) StopCoroutine(transitionOpen);
+            if (transitionClose != null) StopCoroutine(transitionClose);
             if (PlayerController.instance)
             {
                 PlayerController.instance.isTalking = true;
             }
-            StartCoroutine(transitionClose(sceneName));
+            transitionClose = TransitionClose(sceneName);
+            StartCoroutine(transitionClose);
         }
     }
 
 
     [ContextMenu("transitionOpen")]
-    IEnumerator transitionOpen()
+    IEnumerator TransitionOpen()
     {
         bool isTransitionOver = false;
         transitionImage.material.SetFloat("_Cutoff", -0.1f);
@@ -225,7 +235,7 @@ public class GameManager : MonoBehaviour
     }
 
     [ContextMenu("transitionClose")]
-    IEnumerator transitionClose(string sceneName)
+    IEnumerator TransitionClose(string sceneName)
     {
         bool isTransitionOver = false;
         transitionImage.material.SetFloat("_Cutoff", 1.1f);

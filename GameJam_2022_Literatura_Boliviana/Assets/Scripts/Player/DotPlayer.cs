@@ -7,7 +7,8 @@ public class DotPlayer : MonoBehaviour
 {
 
     public DotPlayerTypes.dotPlayer dotPlayerType;
-    public float speed = 1f;
+    public float speed = 1.5f;
+    public float rotationSpeed= 1.5f;
 
     DotPlayerController dotPlayerController;
 
@@ -39,5 +40,6 @@ public class DotPlayer : MonoBehaviour
             direction = dotPlayerController.DotPlayer_1.Movement.ReadValue<Vector2>();
         }
         rbDotPlayer.velocity = direction * speed;
+        rbDotPlayer.transform.Rotate(0,0,rotationSpeed * Time.deltaTime);
     }
 }

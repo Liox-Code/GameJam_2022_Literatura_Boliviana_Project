@@ -92,90 +92,38 @@ public partial class @DotPlayerController : IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                }
-            ]
-        },
-        {
-            ""name"": ""DotPlayer_2"",
-            ""id"": ""e6fdc84c-2e04-400b-b9b7-b769d21f09b5"",
-            ""actions"": [
+                },
                 {
-                    ""name"": ""Movement"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""572e3ed2-86bc-47a1-928f-b4c2b89f9fc4"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": ""Arrows"",
-                    ""id"": ""b54d6c82-f136-4d87-a656-a2cf5f56ba40"",
-                    ""path"": ""2DVector"",
+                    ""name"": """",
+                    ""id"": ""1208ede0-6ab8-40f1-8577-285dcdd79acb"",
+                    ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Movement"",
-                    ""isComposite"": true,
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""f0ffd7ef-7f83-4b0a-a6b6-3266d6e35a6c"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""884c9b91-8fe3-41d8-9244-db610cfdf438"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""b5c39714-4bd8-4930-b6df-24f9e3653e29"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""8ce0a59a-cbaa-48ea-af24-8f4a3f7e85d7"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 }
             ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""Gamepad"",
+            ""bindingGroup"": ""Gamepad"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Gamepad>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        }
+    ]
 }");
         // DotPlayer_1
         m_DotPlayer_1 = asset.FindActionMap("DotPlayer_1", throwIfNotFound: true);
         m_DotPlayer_1_Movement = m_DotPlayer_1.FindAction("Movement", throwIfNotFound: true);
-        // DotPlayer_2
-        m_DotPlayer_2 = asset.FindActionMap("DotPlayer_2", throwIfNotFound: true);
-        m_DotPlayer_2_Movement = m_DotPlayer_2.FindAction("Movement", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -264,44 +212,16 @@ public partial class @DotPlayerController : IInputActionCollection2, IDisposable
         }
     }
     public DotPlayer_1Actions @DotPlayer_1 => new DotPlayer_1Actions(this);
-
-    // DotPlayer_2
-    private readonly InputActionMap m_DotPlayer_2;
-    private IDotPlayer_2Actions m_DotPlayer_2ActionsCallbackInterface;
-    private readonly InputAction m_DotPlayer_2_Movement;
-    public struct DotPlayer_2Actions
+    private int m_GamepadSchemeIndex = -1;
+    public InputControlScheme GamepadScheme
     {
-        private @DotPlayerController m_Wrapper;
-        public DotPlayer_2Actions(@DotPlayerController wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Movement => m_Wrapper.m_DotPlayer_2_Movement;
-        public InputActionMap Get() { return m_Wrapper.m_DotPlayer_2; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(DotPlayer_2Actions set) { return set.Get(); }
-        public void SetCallbacks(IDotPlayer_2Actions instance)
+        get
         {
-            if (m_Wrapper.m_DotPlayer_2ActionsCallbackInterface != null)
-            {
-                @Movement.started -= m_Wrapper.m_DotPlayer_2ActionsCallbackInterface.OnMovement;
-                @Movement.performed -= m_Wrapper.m_DotPlayer_2ActionsCallbackInterface.OnMovement;
-                @Movement.canceled -= m_Wrapper.m_DotPlayer_2ActionsCallbackInterface.OnMovement;
-            }
-            m_Wrapper.m_DotPlayer_2ActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @Movement.started += instance.OnMovement;
-                @Movement.performed += instance.OnMovement;
-                @Movement.canceled += instance.OnMovement;
-            }
+            if (m_GamepadSchemeIndex == -1) m_GamepadSchemeIndex = asset.FindControlSchemeIndex("Gamepad");
+            return asset.controlSchemes[m_GamepadSchemeIndex];
         }
     }
-    public DotPlayer_2Actions @DotPlayer_2 => new DotPlayer_2Actions(this);
     public interface IDotPlayer_1Actions
-    {
-        void OnMovement(InputAction.CallbackContext context);
-    }
-    public interface IDotPlayer_2Actions
     {
         void OnMovement(InputAction.CallbackContext context);
     }

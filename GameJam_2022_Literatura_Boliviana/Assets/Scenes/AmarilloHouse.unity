@@ -6781,6 +6781,11 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 357271294209310754, guid: ee1826df45db5e042be11625982fc29f, type: 3}
+      propertyPath: m_text
+      value: "El \xE1rbol de sefirot\u2026 justo como en los otros casos\u2026 \r\n\xC9l
+        sabe algo\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 357271294209310754, guid: ee1826df45db5e042be11625982fc29f, type: 3}
       propertyPath: m_fontColor.b
       value: 0.03529412
       objectReference: {fileID: 0}
@@ -6803,6 +6808,18 @@ PrefabInstance:
     - target: {fileID: 1504901263006479597, guid: ee1826df45db5e042be11625982fc29f, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700197405987763806, guid: ee1826df45db5e042be11625982fc29f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700197405987763806, guid: ee1826df45db5e042be11625982fc29f, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700197405987763806, guid: ee1826df45db5e042be11625982fc29f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1912554467566191432, guid: ee1826df45db5e042be11625982fc29f, type: 3}
       propertyPath: m_IsActive
@@ -6859,6 +6876,14 @@ PrefabInstance:
     - target: {fileID: 6673420805568592053, guid: ee1826df45db5e042be11625982fc29f, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744568986800432663, guid: ee1826df45db5e042be11625982fc29f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744568986800432663, guid: ee1826df45db5e042be11625982fc29f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7517555635945538590, guid: ee1826df45db5e042be11625982fc29f, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -6939,6 +6964,14 @@ PrefabInstance:
     - target: {fileID: 8336362136074020594, guid: ee1826df45db5e042be11625982fc29f, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8336362136074020595, guid: ee1826df45db5e042be11625982fc29f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8336362136074020595, guid: ee1826df45db5e042be11625982fc29f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8336362136592982434, guid: ee1826df45db5e042be11625982fc29f, type: 3}
       propertyPath: m_StaticEditorFlags

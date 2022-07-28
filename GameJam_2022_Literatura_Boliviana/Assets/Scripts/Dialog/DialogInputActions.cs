@@ -69,6 +69,17 @@ public partial class @DialogInputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""2cd387c5-cdae-4e80-9c00-8676475f3685"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextDialog"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""4f85e79b-c67c-4f03-9339-ab5b570c64cd"",
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
